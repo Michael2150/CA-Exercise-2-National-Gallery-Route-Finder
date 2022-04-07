@@ -1,4 +1,4 @@
-package com.ca2.caexercise2nationalgalleryroutefinder;
+package com.ca.two;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

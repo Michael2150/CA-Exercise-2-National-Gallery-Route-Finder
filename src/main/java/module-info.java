@@ -3,6 +3,6 @@ module com.ca2.caexercise2nationalgalleryroutefinder {
     requires javafx.fxml;
 
 
-    opens com.ca2.caexercise2nationalgalleryroutefinder to javafx.fxml;
-    exports com.ca2.caexercise2nationalgalleryroutefinder;
+    opens com.ca.two to javafx.fxml;
+    exports com.ca.two;
 }

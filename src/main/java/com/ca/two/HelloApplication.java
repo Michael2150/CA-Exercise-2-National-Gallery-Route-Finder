@@ -1,4 +1,4 @@
-package com.ca2.caexercise2nationalgalleryroutefinder;
+package com.ca.two;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
