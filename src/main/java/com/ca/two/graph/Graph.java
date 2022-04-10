@@ -86,6 +86,23 @@ public class Graph<T> {
         return false;
     }
 
+    //Returns true if there is a path between two nodes, false if not.
+    public boolean containsEdge(T from, T to) {
+        if (!contains(from) || !contains(to))
+            throw new IllegalArgumentException("One of the nodes does not exist.");
+
+        Node<T> fromNode = getNode(from);
+        Node<T> toNode = getNode(to);
+
+        assert fromNode != null;
+        return fromNode.containsEdge(toNode);
+    }
+
+    //Returns the amount of nodes in the Graph.
+    public int size() {
+        return nodes.size();
+    }
+
     //Returns the node with the given data.
     private Node<T> getNode(T data) {
         for (Node<T> node : nodes) {
