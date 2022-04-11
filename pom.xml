@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.ca2.caexercise2nationalgalleryroutefinder/com.ca.two.HelloApplication
+                                com.ca2.caexercise2nationalgalleryroutefinder/com.ca.two.Application
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
