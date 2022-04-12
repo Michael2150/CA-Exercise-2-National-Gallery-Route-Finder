@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="CA-Exercise-2-National-Gallery-Route-Finder" target="18" />
+      <module name="CA-Exercise-2-National-Gallery-Route-Finder" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>

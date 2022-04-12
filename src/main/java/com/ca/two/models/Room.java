@@ -8,7 +8,6 @@ public class Room {
     private String name;
     private String description;
     private String image_url;
-    private
 
     public Room() {
         this.id = UUID.randomUUID();

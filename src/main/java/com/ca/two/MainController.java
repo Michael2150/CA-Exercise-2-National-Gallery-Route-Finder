@@ -1,6 +1,5 @@
 package com.ca.two;
 
-import com.ca.two.graph.Graph;
 import com.ca.two.listviews.RoomListCell;
 import com.ca.two.models.Room;
 import javafx.collections.ListChangeListener;
