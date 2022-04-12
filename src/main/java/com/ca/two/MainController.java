@@ -1,5 +1,7 @@
 package com.ca.two;
 
+import com.ca.two.graph.Graph;
+import com.ca.two.graph.Pixel;
 import com.ca.two.listviews.RoomListCell;
 import com.ca.two.models.Room;
 import javafx.collections.ListChangeListener;
@@ -11,10 +13,12 @@ import javafx.scene.control.ListView;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+;
 
 public class MainController implements Initializable {
-    private LinkedList<Room> rooms;
-    private Graph<Room> graph;
+    private LinkedList<Room> roomsList;
+    private Graph<Room> rooms;
+    private Graph<Pixel> pixels;
 
     @FXML
     private ChoiceBox<Room> avoidChoiceBox;
@@ -27,12 +31,20 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        rooms = DataAccess.readInCSV();
-        rooms.remove(0); //Remove the header row
-
-        graph = new Graph<>();
-
+        initData();
         setupListViewAndChoiceBoxes();
+    }
+
+    private void initData(){
+        roomsList = DataAccess.readInCSV();
+        rooms = DataAccess.createGraph(roomsList);
+        System.out.println(rooms);
+
+        Thread thread = new Thread(() -> {
+            pixels = DataAccess.readInMask();
+            System.out.println(pixels);
+        });
+        thread.start();
     }
 
     private void setupListViewAndChoiceBoxes() {
@@ -43,12 +55,12 @@ public class MainController implements Initializable {
         //Set up the choice boxes to load all the rooms but the ones in the list views when the list views' items change
         listViewWaypoints.getItems().addListener((ListChangeListener<? super Room>) (change) -> {
             wayPointChoiceBox.getItems().clear();
-            wayPointChoiceBox.getItems().addAll(rooms);
+            wayPointChoiceBox.getItems().addAll(roomsList);
             wayPointChoiceBox.getItems().removeAll(listViewWaypoints.getItems());
         });
         listViewAvoid.getItems().addListener((ListChangeListener<? super Room>) (change) -> {
             avoidChoiceBox.getItems().clear();
-            avoidChoiceBox.getItems().addAll(rooms);
+            avoidChoiceBox.getItems().addAll(roomsList);
             avoidChoiceBox.getItems().removeAll(listViewAvoid.getItems());
         });
 
@@ -59,8 +71,8 @@ public class MainController implements Initializable {
         avoidChoiceBox.getItems().clear();
 
         //Add all the rooms to the choice boxes
-        wayPointChoiceBox.getItems().addAll(rooms);
-        avoidChoiceBox.getItems().addAll(rooms);
+        wayPointChoiceBox.getItems().addAll(roomsList);
+        avoidChoiceBox.getItems().addAll(roomsList);
 
         //When the choice box's values change, add the selected value to the list view
         wayPointChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

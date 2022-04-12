@@ -1,6 +1,8 @@
 package com.ca.two.graph;
 
-public class Edge<T> {
+import java.io.Serializable;
+
+public class Edge<T> implements Serializable {
     private Node<T> from;
     private Node<T> to;
     private float weight;

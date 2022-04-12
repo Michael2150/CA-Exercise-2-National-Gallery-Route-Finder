@@ -1,22 +1,15 @@
 package com.ca.two.graph;
 
-import com.ca.two.graph.Algorithms;
-import com.ca.two.graph.Graph;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AlgorithmsTest {
 
-    //Graph
-    Graph<String> graph;
-
-    @BeforeEach
-    void setUp() {
+    @Test
+    void dijkstra() {
         //Create a graph to test with
-        graph = new Graph();
+        Graph<String> graph = new Graph();
         graph.addNode("S");
         graph.addNode("A", "S");
         graph.addNode("B", "S", "A");
@@ -50,16 +43,7 @@ class AlgorithmsTest {
         graph.getNode("J").setEdgeWeight(graph.getNode("K"), 4f/8f);
         graph.getNode("K").setEdgeWeight(graph.getNode("E"), 5f/8f);
         graph.getNode("G").setEdgeWeight(graph.getNode("E"), 2f/8f);
-    }
 
-    @AfterEach
-    void tearDown() {
-        //Clear the graph
-        graph = null;
-    }
-
-    @Test
-    void dijkstra() {
         //Test the Dijkstra algorithm
         var result = Algorithms.Dijkstra(graph, "S", "E");
         var expected = new String[]{"S", "B", "H", "G", "E"};

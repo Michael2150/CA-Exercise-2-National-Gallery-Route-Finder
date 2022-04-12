@@ -1,52 +1,156 @@
 package com.ca.two;
 
+import com.ca.two.graph.Graph;
+import com.ca.two.graph.Pixel;
 import com.ca.two.models.Room;
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.paint.Color;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.LinkedList;
+import java.util.List;
 
 public class DataAccess {
     public static LinkedList<Room> readInCSV() {
         LinkedList<Room> rooms = new LinkedList<>();
-        BufferedReader br = null;
-        FileReader fr = null;
-        try {
-            File file = new File("data/data.csv");
-            fr = new FileReader(file);
-            br = new BufferedReader(fr);
 
-            String delimiter = ",";
-            String curLine;
-            String[] values;
-            while ((curLine = br.readLine()) != null) {
-                values = curLine.split(delimiter);
+        //If there is a header row in the CSV, skip it
+        boolean shouldSkipHeader = true;
 
-                Room room = new Room();
-                room.setName(values[0]);
-                room.setDescription(values[1]);
-                room.setImage_url(values[2]);
-                rooms.add(room);
+        // CSV file to read in
+        File file = new File("data/data.txt");
+
+        // tab delimited file
+        String delimiter = "\t";
+
+        //Array Indices for CSV
+        final int ROOM_ID = 0;
+        final int ROOM_NAME = 1;
+        final int ROOM_DESCRIPTION = 2;
+        final int ROOM_CONNECTIONS = 3;
+        final int ROOM_IMAGE_URL = 4;
+        final int ROOM_X = 5;
+        final int ROOM_Y = 6;
+
+        try (FileReader fr = new FileReader(file)) { //Get the FileReader
+            try (BufferedReader br = new BufferedReader(fr)) { //Get the BufferedReader
+                String line;
+                while ((line = br.readLine()) != null) { //Read the file line by line
+                    if (shouldSkipHeader) {
+                        shouldSkipHeader = false;
+                        continue;
+                    }
+
+                    String[] values = line.split(delimiter); //Split the line into an array of values
+
+                    if (values.length != 7)
+                        continue;
+
+                    //Remove " from the values
+                    for (int i = 0; i < values.length; i++) {
+                        values[i] = values[i].replaceAll("\"", "");
+                    }
+
+                    //Create a new Room object
+                    Room room = new Room();
+                    room.setId(Integer.parseInt(values[ROOM_ID]));
+                    room.setName(values[ROOM_NAME]);
+                    room.setDescription(values[ROOM_DESCRIPTION]);
+                    room.setImage_url(values[ROOM_IMAGE_URL]);
+
+                    //Get the x and y coordinates and set them
+                    int x = Integer.parseInt(values[ROOM_X]);
+                    int y = Integer.parseInt(values[ROOM_Y]);
+                    room.setPosition(new Point2D(x, y));
+
+                    //Create a list of connections
+                    String[] connections = values[ROOM_CONNECTIONS].split(","); //Split the connections into an array of values
+                    LinkedList<Integer> connectionList = new LinkedList<>(); //Create a new LinkedList to store the connections
+                    List.of(connections).forEach(connection -> connectionList.add(Integer.parseInt(connection))); //Cast each string to an integer and add to the list
+                    room.setConnectedRooms(connectionList); //Set the connections for the room
+
+                    //Add the room to the list
+                    rooms.add(room);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (fr != null)
-                    fr.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (br != null)
-                    br.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         return rooms;
+    }
+
+    //Read in the mask image and create a graph of the green pixels in the image
+    public static Graph<Pixel> readInMask() {
+        Graph<Pixel> graph = new Graph<>();
+
+        //Get the image
+        File file = new File("data/floorplan_mask.png");
+        Image image = new Image(file.toURI().toString());
+
+        //Get the width and height of the image
+        int width = (int) image.getWidth();
+        int height = (int) image.getHeight();
+
+        //Get the pixelReader
+        PixelReader pixelReader = image.getPixelReader();
+
+        //Get the color of the first pixel
+        Color color = pixelReader.getColor(0, 0);
+
+        //Loop through the image and add the edges
+        for (int y = 0; y < height; y ++) {
+            for (int x = 0; x < width; x ++) {
+                //Get the color of the pixel
+                Color center = pixelReader.getColor(x, y);
+
+                //If the center is the same as the color of the first pixel, add it as a node
+                if (center.equals(color)) {
+                    var newCurNode = new Pixel(x, y).multiply(2);
+                    graph.addNode(newCurNode);
+
+                    //Check the surrounding pixels and add edges if they are the same color
+                    Color top = (y - 1 >= 0) ? pixelReader.getColor(x, y - 1) : Color.TRANSPARENT;
+                    Color left = (x - 1 >= 0) ? pixelReader.getColor(x - 1, y) : Color.TRANSPARENT;
+
+                    if (top.equals(color)) {
+                        var newNode = new Pixel(x, y - 1).multiply(2);
+                        graph.addNode(newNode);
+                        graph.addEdge(newCurNode, newNode);
+                    }
+                    if (left.equals(color)) {
+                        var newNode = new Pixel(x - 1, y).multiply(2);
+                        graph.addNode(newNode);
+                        graph.addEdge(newCurNode, newNode);
+                    }
+                }
+            }
+        }
+
+        return graph;
+    }
+
+    //Create a Graph from LinkedList of Rooms
+    public static Graph<Room> createGraph(LinkedList<Room> rooms) {
+        Graph<Room> graph = new Graph<>();
+
+        for (Room room : rooms) {
+            graph.addNode(room);
+        }
+
+        for (Room room : rooms) {
+            for (Integer connection : room.getConnectedRooms()) {
+                for (Room connectedRoom : rooms) {
+                    if (connectedRoom.getId() == connection)
+                        graph.addEdge(room, connectedRoom);
+                }
+            }
+        }
+
+        return graph;
     }
 }

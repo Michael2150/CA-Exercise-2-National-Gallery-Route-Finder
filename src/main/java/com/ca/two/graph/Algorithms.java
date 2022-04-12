@@ -7,6 +7,7 @@ public class Algorithms {
      * Dijkstra's algorithm
      * @param graph graph
      * @param start start Node
+     * @param destination end Node
      * @param <T> type of node
      * @return A list of nodes in order from the start node to the end node.
      */
@@ -75,5 +76,34 @@ public class Algorithms {
         return path;
     }
 
+    /**
+     * Breadth first search
+     * @param graph graph
+     * @param start start Node
+     * @param destination end Node
+     * @param <T> type of node
+     * @return A list of nodes in order from the start node to the end node.
+     */
+    public static <T> LinkedList<T> BFS(Graph<T> graph , T start, T destination) {
+        //Check inputs
+        var begin = graph.getNode(start);
+        var end = graph.getNode(destination);
+        if (begin == null || end == null)
+            throw new IllegalArgumentException("start or end node is not in the graph");
 
+        //Create variables
+        HashMap<Node<T>, Boolean> visited = new HashMap<>();
+        LinkedList<T> path = new LinkedList<>();
+
+        //Create queue
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.add(begin);
+
+        //Do actual algorithm
+        while (!queue.isEmpty()) {
+            var current = queue.poll();
+
+        }
+        return path;
+    }
 }

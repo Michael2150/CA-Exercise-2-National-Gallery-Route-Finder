@@ -1,11 +1,12 @@
 package com.ca.two.graph;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
 //A Node of a graph.
-public class Node<T> {
+public class Node<T> implements Serializable {
     private final UUID id;
     private T value;
     private HashMap<Node<T>, Float> edges;

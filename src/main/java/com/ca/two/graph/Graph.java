@@ -1,11 +1,12 @@
 package com.ca.two.graph;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 //A Graph data structure of type T.
 //The Graph stores nodes that are linked to each other with references.
 //This is an edgeless graph.
-public class Graph<T> {
+public class Graph<T> implements Serializable {
     private LinkedList<Node<T>> nodes;
 
     //Constructor
@@ -180,11 +181,7 @@ public class Graph<T> {
     @Override
     public String toString() {
         var sb = new StringBuilder();
-        sb.append("Graph: Node Count: ").append(size()).append(" Edge Count: ").append(getEdgeCount()).append(" Nodes: ");
-        for (var node : nodes) {
-            sb.append(node.getValue());
-            sb.append("\n");
-        }
+        sb.append("Graph: Node Count: ").append(size()).append(" Edge Count: ").append(getEdgeCount());
         return sb.toString();
     }
 }
