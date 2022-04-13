@@ -1,7 +1,6 @@
 package com.ca.two.models;
 
 import com.ca.two.graph.Pixel;
-import javafx.geometry.Point2D;
 
 import java.util.LinkedList;
 import java.util.Objects;

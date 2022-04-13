@@ -12,6 +12,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
@@ -33,37 +34,30 @@ public class MainController implements Initializable {
     @FXML
     private ListView<Room> listViewWaypoints;
     @FXML
-    private ProgressIndicator pixelsLoader;
-    @FXML
-    private Label pixelsStatusLabel;
-    @FXML
-    private ProgressIndicator roomsLoader;
-    @FXML
     private ChoiceBox<Room> startChoiceBox;
     @FXML
-    private Label statusLabel;
+    private Label lblStatus;
     @FXML
     private ChoiceBox<Room> wayPointChoiceBox;
+    @FXML
+    private ImageView routeOverlay;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setupThreads();
         initData();
         setupListViewAndChoiceBoxes();
-    }
-
-    Thread loadPixelsGraphThread;
-    private void setupThreads() {
-        loadPixelsGraphThread = new Thread(() -> {
-            pixels = DataAccess.readInMask();
-            System.out.println(pixels);
-        });
     }
 
     private void initData(){
         roomsList = DataAccess.readInCSV();
         rooms = DataAccess.createGraph(roomsList);
         System.out.println(rooms);
+
+        Thread loadPixelsGraphThread;
+        loadPixelsGraphThread = new Thread(() -> {
+            pixels = DataAccess.readInMask();
+            System.out.println(pixels);
+        });
 
         loadPixelsGraphThread.start();
     }

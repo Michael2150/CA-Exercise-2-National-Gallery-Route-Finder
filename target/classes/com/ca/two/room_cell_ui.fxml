@@ -4,22 +4,24 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="220.0" style="-fx-background-color: #dedede; -fx-background-radius: 12; -fx-border-radius: 12;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ca.two.RoomCellController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="220.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <children>
-      <Label fx:id="lblName" text="Processing Preset Name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="0.0">
+      <Label fx:id="lblName" text="Processing Preset Name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="0.0">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </Label>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onMouseClicked="#btnCloseClicked" prefHeight="20.0" prefWidth="20.0" text="x" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onMouseClicked="#btnCloseClicked" prefHeight="20.0" prefWidth="20.0" text="x" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="Lucida Sans Unicode" size="9.0" />
          </font>
       </Button>
+      <Pane fx:id="pnlColor" layoutX="12.0" layoutY="12.0" prefHeight="34.0" prefWidth="20.0" style="-fx-background-color: #FF0000; -fx-background-radius: 20;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

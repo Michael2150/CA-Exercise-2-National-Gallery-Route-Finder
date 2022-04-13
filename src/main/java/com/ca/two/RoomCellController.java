@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 public class RoomCellController{
     private Room room;
@@ -12,6 +13,8 @@ public class RoomCellController{
 
     @FXML
     private Label lblName;
+    @FXML
+    private Pane pnlColor;
 
     public Room getRoom() {
         return room;

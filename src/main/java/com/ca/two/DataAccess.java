@@ -3,8 +3,6 @@ package com.ca.two;
 import com.ca.two.graph.Graph;
 import com.ca.two.graph.Pixel;
 import com.ca.two.models.Room;
-import javafx.geometry.Point2D;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -46,7 +44,7 @@ public class DataAccess {
 
                     String[] values = line.split(delimiter); //Split the line into an array of values
 
-                    if (values.length != 7)
+                    if (values.length != 8)
                         continue;
 
                     //Remove " from the values
