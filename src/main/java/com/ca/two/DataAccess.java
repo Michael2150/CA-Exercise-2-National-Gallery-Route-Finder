@@ -45,9 +45,6 @@ public class DataAccess {
 
                     String[] values = line.split(delimiter); //Split the line into an array of values
 
-                    if (values.length != 8)
-                        continue;
-
                     //Remove " from the values
                     for (int i = 0; i < values.length; i++) {
                         values[i] = values[i].replaceAll("\"", "");
@@ -59,7 +56,12 @@ public class DataAccess {
                     room.setName(values[ROOM_NAME]);
                     room.setDescription(values[ROOM_DESCRIPTION]);
                     room.setImage_url(values[ROOM_IMAGE_URL]);
-                    room.setTimePeriod(values[ROOM_TIME_PERIOD]);
+
+                    if (values.length <= ROOM_TIME_PERIOD){
+                        room.setTimePeriod("");
+                    } else {
+                        room.setTimePeriod(values[ROOM_TIME_PERIOD]);
+                    }
 
                     //Get the x and y coordinates and set them
                     int x = Integer.parseInt(values[ROOM_X]);

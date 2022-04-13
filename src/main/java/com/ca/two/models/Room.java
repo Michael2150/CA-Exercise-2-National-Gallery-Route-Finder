@@ -1,6 +1,7 @@
 package com.ca.two.models;
 
 import com.ca.two.graph.Pixel;
+import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -71,6 +72,21 @@ public class Room {
 
     public void setTimePeriod(String timePeriod) {
         this.timePeriod = timePeriod;
+    }
+
+    public Color getColor() {
+        switch (getTimePeriod().trim()) {
+            case "1200-1500":
+                return Color.rgb(84, 133, 189);
+            case "1500-1600":
+                return Color.rgb(172, 62, 89);
+            case "1600-1700":
+                return Color.rgb(234, 141, 0);
+            case "1700-1930":
+                return Color.rgb(102, 131, 91);
+            default:
+                return Color.rgb(0, 0, 0);
+        }
     }
 
     @Override

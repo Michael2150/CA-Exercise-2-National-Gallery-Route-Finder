@@ -92,7 +92,20 @@ public class Node<T> implements Serializable {
     //ToString
     public String toString() {
         var sb = new StringBuilder();
-        sb.append("Node: Data[").append(value).append("] Edges[" + edges.size() + "]");
+        sb.append("Node: Data[").append(value).append("] Edges[").append(edges.size()).append("] Average Weight[").append(getAverageEdgeWeight()).append("]");
         return sb.toString();
+    }
+
+    //Get average weight of edges
+    public float getAverageEdgeWeight() {
+        //Check for /0 error
+        if (edges.size() == 0)
+            return 0;
+
+        float sum = 0;
+        for (float weight : edges.values()) {
+            sum += weight;
+        }
+        return sum / edges.size();
     }
 }

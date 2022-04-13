@@ -1,5 +1,8 @@
 package com.ca.two.graph;
 
+import com.ca.two.models.Room;
+import javafx.scene.control.ListView;
+
 import java.util.*;
 
 public class Algorithms {
@@ -105,5 +108,53 @@ public class Algorithms {
 
         }
         return path;
+    }
+
+    //Set all the connections in a graph to the same weight
+    public static <T> void setAllWeights(Graph<T> graph, float weight) {
+        for (var val : graph.getNodes()) {
+            var node = graph.getNode(val);
+            for (var edge : node.getEdges()) {
+                node.setEdgeWeight(edge.getTo(), weight);
+            }
+        }
+    }
+
+    //Sets the weight of a connection between two nodes based on the list of waypoints and the list of points to avoid.
+    public static void setupGraphWeights(Graph<Room> rooms, float diffusionDepth, double diffusionWeight, ListView<Room> listViewWaypoints, ListView<Room> listViewAvoid) {
+        //Set up the weights for the graph
+        LinkedList<Room> waypoints = new LinkedList<>();
+        waypoints.addAll(listViewWaypoints.getItems());
+        waypoints.addAll(listViewAvoid.getItems());
+
+        for (Room waypoint : waypoints) {
+            //Get all the nodes that are depth away from the waypoint
+            LinkedList<Node<Room>> nodes = new LinkedList<>();
+            HashMap<Edge<Room>, Integer> edgeDiffusion = new HashMap<>();
+            HashMap<Edge<Room>, Integer> sign = new HashMap<>();
+
+            nodes.add(rooms.getNode(waypoint));
+
+            for (int i = 1; i <= diffusionDepth; i++) {
+                LinkedList<Node<Room>> newNodes = new LinkedList<>();
+                for (Node<Room> node : nodes) {
+                    for (Edge<Room> edge : node.getEdges()) {
+                        if (!nodes.contains(edge.getTo())) {
+                            newNodes.add(edge.getTo());
+                            edgeDiffusion.put(edge, i);
+                            sign.put(edge, listViewWaypoints.getItems().contains(waypoint) ? 1 : -1);
+                        }
+                    }
+                }
+                nodes.addAll(newNodes);
+            }
+
+            //Apply weights to the edges
+            for (Edge<Room> edge : edgeDiffusion.keySet()) {
+                float diff = (float) (diffusionDepth * diffusionWeight - (edgeDiffusion.get(edge) * diffusionWeight));
+                diff = sign.get(edge) * diff;
+                edge.setWeight(edge.getWeight() + diff);
+            }
+        }
     }
 }

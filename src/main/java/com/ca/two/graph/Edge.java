@@ -31,11 +31,12 @@ public class Edge<T> implements Serializable {
     }
 
     public float getWeight() {
-        return weight;
+        return from.getEdgeWeight(to);
     }
 
     public void setWeight(float weight) {
         this.weight = weight;
+        from.setEdgeWeight(to, weight);
     }
 
     //Contains Node

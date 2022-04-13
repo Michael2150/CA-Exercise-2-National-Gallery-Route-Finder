@@ -10,7 +10,7 @@ id	Room Number	Room Description	Connections	Image	x	y	time_period
 10	Room 10	The sacred and profane in sixteenth-century Italian art	"9,11"	https://www.nationalgallery.org.uk/media/8693/raphael-portrait-pope-julius-ii-ng27-c-wide.jpg	285	270	1200-1500
 11	Room 11	Veronese's 'Four Allegories of Love'	"5,10,12,14"	https://www.nationalgallery.org.uk/media/8527/veronese-allegory-love-iv-happy-union-ng1326-c-wide.jpg	325	270	1200-1500
 12	Room 12	Northern Italian Portraiture 1510–1580 	"11,49,50"	https://www.nationalgallery.org.uk/media/13563/n-0299-room-banner-675x230.jpg	365	270	1200-1500
-13	Sunley Room	Sunley Room Exhibition	"30,49"	https://www.nationalgallery.org.uk/media/hnnbk4ti/kehindewiley_desktopbanner_oct.jpg	375	240	
+13	Sunley Room	Sunley Room Exhibition	"30,49"	https://www.nationalgallery.org.uk/media/hnnbk4ti/kehindewiley_desktopbanner_oct.jpg	375	240
 14	Room 14	The Netherlands	"11,29"	https://www.nationalgallery.org.uk/media/8113/room-14-the-netherlands-wide.jpg	325	235	1200-1500
 15	Room 15	Divider room	"9,17,16,18,26,29"	https://www.nationalgallery.org.uk/media/8111/room-11-joachim-beuckelaer-wide.jpg	240	190	1600-1700
 16	Room 16	"Cranach the Elder, Huber and Seisenegger"	"15,17"	https://www.nationalgallery.org.uk/media/14788/ng6539_banner_675x230.jpg	205	205	1600-1700

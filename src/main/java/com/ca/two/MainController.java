@@ -1,29 +1,25 @@
 package com.ca.two;
 
-import com.ca.two.graph.Graph;
-import com.ca.two.graph.Pixel;
+import com.ca.two.graph.*;
 import com.ca.two.listviews.RoomListCell;
 import com.ca.two.models.Room;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
     private LinkedList<Room> roomsList;
     private Graph<Room> rooms;
     private Graph<Pixel> pixels;
-    private boolean shouldCalcRoute = false;
 
     @FXML
     private ChoiceBox<Room> avoidChoiceBox;
@@ -49,17 +45,20 @@ public class MainController implements Initializable {
     }
 
     private void initData(){
+        setStatus("Loading Data...");
+
         roomsList = DataAccess.readInCSV();
         rooms = DataAccess.createGraph(roomsList);
         System.out.println(rooms);
 
         Thread loadPixelsGraphThread;
         loadPixelsGraphThread = new Thread(() -> {
-            pixels = DataAccess.readInMask();
+            setPixels(DataAccess.readInMask());
             System.out.println(pixels);
         });
 
         loadPixelsGraphThread.start();
+        setStatus("Ready");
     }
 
     private void setupListViewAndChoiceBoxes() {
@@ -68,16 +67,21 @@ public class MainController implements Initializable {
         listViewWaypoints.setCellFactory(param -> new RoomListCell(listViewWaypoints));
 
         //Set up the choice boxes to load all the rooms but the ones in the list views when the list views' items change
-        listViewWaypoints.getItems().addListener((ListChangeListener<? super Room>) (change) -> {
+        Runnable loadRooms = () -> {
             wayPointChoiceBox.getItems().clear();
-            wayPointChoiceBox.getItems().addAll(roomsList);
-            wayPointChoiceBox.getItems().removeAll(listViewWaypoints.getItems());
-        });
-        listViewAvoid.getItems().addListener((ListChangeListener<? super Room>) (change) -> {
             avoidChoiceBox.getItems().clear();
+
+            wayPointChoiceBox.getItems().addAll(roomsList);
             avoidChoiceBox.getItems().addAll(roomsList);
+
+            wayPointChoiceBox.getItems().removeAll(listViewWaypoints.getItems());
+            wayPointChoiceBox.getItems().removeAll(listViewAvoid.getItems());
+            avoidChoiceBox.getItems().removeAll(listViewWaypoints.getItems());
             avoidChoiceBox.getItems().removeAll(listViewAvoid.getItems());
-        });
+        };
+
+        listViewWaypoints.getItems().addListener((ListChangeListener<? super Room>) (change) -> loadRooms.run());
+        listViewAvoid.getItems().addListener((ListChangeListener<? super Room>) (change) -> loadRooms.run());
 
         //make sure the choice boxes are populated with the correct data
         wayPointChoiceBox.getItems().add(new Room());
@@ -102,32 +106,81 @@ public class MainController implements Initializable {
         //Set up the start and destination choice boxes.
         startChoiceBox.getItems().addAll(roomsList);
         destinationChoiceBox.getItems().addAll(roomsList);
-
-        //When the choice box's values change make sure the other choice box has all the rooms except the selected one
-        startChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                destinationChoiceBox.getItems().clear();
-                destinationChoiceBox.getItems().addAll(roomsList);
-                destinationChoiceBox.getItems().remove(newValue);
-            }
-        });
-        destinationChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                startChoiceBox.getItems().clear();
-                startChoiceBox.getItems().addAll(roomsList);
-                startChoiceBox.getItems().remove(newValue);
-            }
-        });
     }
-
 
     @FXML
     void btnCalculateClicked(MouseEvent event) {
+        //TEST
+        startChoiceBox.getSelectionModel().select(getRoomWithID(66));
+        destinationChoiceBox.getSelectionModel().select(getRoomWithID(33));
+        listViewAvoid.getItems().addAll(getRoomWithID(10), getRoomWithID(11));
+        listViewWaypoints.getItems().addAll(getRoomWithID(26), getRoomWithID(27), getRoomWithID(28));
 
+        //Start a timer
+        long startTime = System.currentTimeMillis();
+
+        setStatus("Setting up weights...");
+
+        Algorithms.setAllWeights(rooms, 0.5f);
+        Algorithms.setupGraphWeights(rooms, 5f, 0.1f, listViewWaypoints, listViewAvoid);
+
+        setStatus("Running Dijkstra's algorithm...");
+        var results = Algorithms.Dijkstra(rooms,
+                startChoiceBox.getSelectionModel().getSelectedItem(),
+                destinationChoiceBox.getSelectionModel().getSelectedItem());
+
+        //Set the status to the time taken
+        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
+
+        debug_graph(results);
+    }
+
+    private void debug_graph(LinkedList<Room> results) {
+        //print the depth and weight and if the graph includes the waypoints and does not include the to avoid
+        if (rooms.getNodes().containsAll(listViewWaypoints.getItems()) && !rooms.getNodes().containsAll(listViewAvoid.getItems())) {
+            System.out.println("Diffusion depth: " + 5f + " Diffusion weight: " + 0.1f);
+        }
+
+        //Print the waypoints
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nWaypoints: \n");
+        for (Room waypoint : listViewWaypoints.getItems()) {
+            sb.append(rooms.getNode(waypoint)).append(", \n");
+        }
+        //Print to avoid list
+        sb.append("\nAvoid \n");
+        for (Room avoid : listViewAvoid.getItems()) {
+            sb.append(rooms.getNode(avoid)).append(", \n");
+        }
+        //Print the results
+        sb.append("\nResults \n");
+        for (Room room : results) {
+            sb.append(rooms.getNode(room)).append(", \n");
+        }
+        System.out.println(sb.toString());
     }
 
     @FXML
     void btnClearClicked(MouseEvent event) {
 
+    }
+
+    private Room getRoomWithID(int id){
+        for(Room r : roomsList){
+            if(r.getId() == id){
+                return r;
+            }
+        }
+        return null;
+    }
+
+    private String status;
+    private void setStatus(String status) {
+        this.status = status;
+        lblStatus.setText(((pixels == null) ? "(Loading Graph of Pixels...) " : "") + status);
+    }
+    private void setPixels(Graph<Pixel> pixels) {
+        this.pixels = pixels;
+        Platform.runLater(() -> setStatus(status));
     }
 }

@@ -17,7 +17,7 @@ public class RoomListCell extends ListCell<Room> {
 
     public RoomListCell(ListView<Room> parentListView) {
         this.parentListView = parentListView;
-        prefWidthProperty().bind(parentListView.widthProperty().subtract(3));
+        prefWidthProperty().bind(parentListView.widthProperty().subtract(20));
     }
 
     @Override
@@ -28,6 +28,7 @@ public class RoomListCell extends ListCell<Room> {
             try {
                 FXMLLoader fxmlLoader = Application.loadView("room_cell_ui.fxml");
                 thisNode = fxmlLoader.load();
+                thisNode.minWidth(parentListView.getWidth());
                 controller = fxmlLoader.getController(); //New item's controller
                 controller.setRoom(item);
                 controller.setListView(parentListView);
