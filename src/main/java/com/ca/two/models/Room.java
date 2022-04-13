@@ -12,6 +12,7 @@ public class Room {
     private LinkedList<Integer> connectedRooms;
     private String image_url;
     private Pixel position;
+    private String timePeriod;
 
     public Room() {}
 
@@ -62,6 +63,14 @@ public class Room {
 
     public void setPosition(Pixel position) {
         this.position = position;
+    }
+
+    public String getTimePeriod() {
+        return timePeriod;
+    }
+
+    public void setTimePeriod(String timePeriod) {
+        this.timePeriod = timePeriod;
     }
 
     @Override

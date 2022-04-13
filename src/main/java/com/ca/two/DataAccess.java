@@ -32,6 +32,7 @@ public class DataAccess {
         final int ROOM_IMAGE_URL = 4;
         final int ROOM_X = 5;
         final int ROOM_Y = 6;
+        final int ROOM_TIME_PERIOD = 7;
 
         try (FileReader fr = new FileReader(file)) { //Get the FileReader
             try (BufferedReader br = new BufferedReader(fr)) { //Get the BufferedReader
@@ -58,6 +59,7 @@ public class DataAccess {
                     room.setName(values[ROOM_NAME]);
                     room.setDescription(values[ROOM_DESCRIPTION]);
                     room.setImage_url(values[ROOM_IMAGE_URL]);
+                    room.setTimePeriod(values[ROOM_TIME_PERIOD]);
 
                     //Get the x and y coordinates and set them
                     int x = Integer.parseInt(values[ROOM_X]);
