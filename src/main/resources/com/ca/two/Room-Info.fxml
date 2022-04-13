@@ -3,12 +3,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="180.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ca.two.RoomInfoCellController">
    <children>
-      <ImageView fitHeight="194.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="27.0" layoutY="213.0" prefHeight="30.0" prefWidth="191.0" text="Label" />
-      <Label layoutX="27.0" layoutY="235.0" prefHeight="134.0" prefWidth="546.0" text="Label" />
+      <ImageView fx:id="imgView" fitHeight="80.0" fitWidth="180.0" pickOnBounds="true" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Label fx:id="lblTitle" layoutX="8.0" layoutY="62.0" prefHeight="20.0" prefWidth="191.0" text="Title" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+      <Label fx:id="lblDescription" alignment="TOP_LEFT" layoutY="62.0" prefHeight="60.0" prefWidth="546.0" text="Description" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
    </children>
 </AnchorPane>

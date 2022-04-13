@@ -1,6 +1,7 @@
 package com.ca.two;
 
 import com.ca.two.graph.*;
+import com.ca.two.listviews.RoomInfoListCell;
 import com.ca.two.listviews.RoomListCell;
 import com.ca.two.models.Room;
 import javafx.application.Platform;
@@ -29,6 +30,8 @@ public class MainController implements Initializable {
     private ListView<Room> listViewAvoid;
     @FXML
     private ListView<Room> listViewWaypoints;
+    @FXML
+    private ListView<Room> routeListView;
     @FXML
     private ChoiceBox<Room> startChoiceBox;
     @FXML
@@ -65,6 +68,7 @@ public class MainController implements Initializable {
         //Set up the list views to use the RoomListCell class
         listViewAvoid.setCellFactory(param -> new RoomListCell(listViewAvoid));
         listViewWaypoints.setCellFactory(param -> new RoomListCell(listViewWaypoints));
+        routeListView.setCellFactory(param -> new RoomInfoListCell(routeListView));
 
         //Set up the choice boxes to load all the rooms but the ones in the list views when the list views' items change
         Runnable loadRooms = () -> {
@@ -125,9 +129,12 @@ public class MainController implements Initializable {
         Algorithms.setupGraphWeights(rooms, 5f, 0.1f, listViewWaypoints, listViewAvoid);
 
         setStatus("Running Dijkstra's algorithm...");
-        var results = Algorithms.Dijkstra(rooms,
-                startChoiceBox.getSelectionModel().getSelectedItem(),
-                destinationChoiceBox.getSelectionModel().getSelectedItem());
+        var startRoom = startChoiceBox.getSelectionModel().getSelectedItem();
+        var destinationRoom = destinationChoiceBox.getSelectionModel().getSelectedItem();
+        var results = Algorithms.Dijkstra(rooms, startRoom, destinationRoom);
+
+        routeListView.getItems().clear();
+        routeListView.getItems().addAll(results);
 
         //Set the status to the time taken
         setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
@@ -162,7 +169,7 @@ public class MainController implements Initializable {
 
     @FXML
     void btnClearClicked(MouseEvent event) {
-
+        routeListView.getItems().clear();
     }
 
     private Room getRoomWithID(int id){

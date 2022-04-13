@@ -63,10 +63,10 @@
                   <ChoiceBox fx:id="avoidChoiceBox" layoutX="520.0" layoutY="193.0" prefWidth="150.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="5.0" />
                   <Label alignment="CENTER_RIGHT" layoutX="659.0" layoutY="198.0" prefHeight="17.0" prefWidth="86.0" text="Add" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="160.0" />
                   <Label alignment="CENTER_RIGHT" layoutX="222.0" layoutY="198.0" prefHeight="17.0" prefWidth="86.0" text="Add" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="365.0" />
-                  <ChoiceBox fx:id="destinationChoiceBox" layoutX="99.0" layoutY="30.0" prefWidth="150.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="70.0" />
-                  <ChoiceBox fx:id="startChoiceBox" layoutX="99.0" layoutY="63.0" prefWidth="150.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="40.0" />
-                  <Label layoutX="48.0" layoutY="44.0" text="Starting Point" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0" />
-                  <Label layoutX="20.0" layoutY="54.0" text="Destination" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="70.0" />
+                  <ChoiceBox fx:id="destinationChoiceBox" layoutX="101.0" layoutY="58.0" prefWidth="150.0" AnchorPane.leftAnchor="101.0" AnchorPane.topAnchor="58.0" />
+                  <ChoiceBox fx:id="startChoiceBox" layoutX="100.0" layoutY="28.0" prefWidth="150.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="28.0" />
+                  <Label layoutX="11.0" layoutY="32.0" text="Starting Point" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="32.0" />
+                  <Label layoutX="10.0" layoutY="62.0" text="Destination" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="62.0" />
                   <Button layoutX="135.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#btnCalculateClicked" prefHeight="25.0" prefWidth="121.0" text="Calculate Route" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="135.0" />
                   <Button layoutX="11.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#btnClearClicked" prefHeight="25.0" prefWidth="121.0" text="Clear Map &amp; Route" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="11.0" />
                   <Label alignment="CENTER" layoutX="14.0" layoutY="5.0" prefWidth="250.0" text="Starting &amp; Destination Points" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0">
@@ -74,15 +74,15 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="6.0" layoutY="102.0" prefWidth="250.0" text="Preferred Time Periods">
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="91.0" prefWidth="250.0" text="Preferred Time Periods">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <CheckBox layoutX="27.0" layoutY="126.0" mnemonicParsing="false" text="CheckBox" />
-                  <CheckBox layoutX="27.0" layoutY="143.0" mnemonicParsing="false" text="CheckBox" />
-                  <CheckBox layoutX="139.0" layoutY="126.0" mnemonicParsing="false" text="CheckBox" />
-                  <CheckBox layoutX="139.0" layoutY="143.0" mnemonicParsing="false" text="CheckBox" />
+                  <CheckBox layoutX="26.0" layoutY="110.0" mnemonicParsing="false" text="1200 - 1500" />
+                  <CheckBox layoutX="26.0" layoutY="127.0" mnemonicParsing="false" text="1500 - 1600" />
+                  <CheckBox layoutX="138.0" layoutY="110.0" mnemonicParsing="false" text="1600 - 1700" />
+                  <CheckBox layoutX="138.0" layoutY="127.0" mnemonicParsing="false" text="1700 - 1930" />
                   <Label fx:id="lblStatus" layoutX="13.0" layoutY="197.0" prefHeight="17.0" prefWidth="250.0" text="Status" textFill="#868686" />
                </children></AnchorPane>
             <AnchorPane layoutX="3.0" layoutY="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="225.0">
@@ -96,7 +96,7 @@
             </AnchorPane>
             <AnchorPane layoutX="590.0" layoutY="159.0" maxWidth="225.0" minWidth="225.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <ListView layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0" />
+                  <ListView fx:id="routeListView" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0" />
                   <Label alignment="CENTER" layoutX="35.0" layoutY="14.0" text="Route Details" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                      <font>
                         <Font name="System Bold" size="13.0" />
