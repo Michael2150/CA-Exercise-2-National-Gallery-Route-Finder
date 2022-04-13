@@ -1,5 +1,6 @@
 package com.ca.two.models;
 
+import com.ca.two.graph.Pixel;
 import javafx.geometry.Point2D;
 
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ public class Room {
     private String description;
     private LinkedList<Integer> connectedRooms;
     private String image_url;
-    private Point2D position;
+    private Pixel position;
 
     public Room() {}
 
@@ -56,11 +57,11 @@ public class Room {
         this.image_url = image_url;
     }
 
-    public Point2D getPosition() {
+    public Pixel getPosition() {
         return position;
     }
 
-    public void setPosition(Point2D position) {
+    public void setPosition(Pixel position) {
         this.position = position;
     }
 

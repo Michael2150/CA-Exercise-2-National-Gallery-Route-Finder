@@ -4,6 +4,7 @@ import com.ca.two.graph.Graph;
 import com.ca.two.graph.Pixel;
 import com.ca.two.models.Room;
 import javafx.geometry.Point2D;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
@@ -63,7 +64,7 @@ public class DataAccess {
                     //Get the x and y coordinates and set them
                     int x = Integer.parseInt(values[ROOM_X]);
                     int y = Integer.parseInt(values[ROOM_Y]);
-                    room.setPosition(new Point2D(x, y));
+                    room.setPosition(new Pixel(x, y));
 
                     //Create a list of connections
                     String[] connections = values[ROOM_CONNECTIONS].split(","); //Split the connections into an array of values
@@ -83,6 +84,7 @@ public class DataAccess {
 
         return rooms;
     }
+
 
     //Read in the mask image and create a graph of the green pixels in the image
     public static Graph<Pixel> readInMask() {
@@ -132,6 +134,30 @@ public class DataAccess {
         }
 
         return graph;
+    }
+
+    //Get the closest value on the graph to the given value
+    public static Pixel getClosestValue(Graph<Pixel> graph, Pixel value) {
+        var closestNode = graph.getNode(value);
+        Pixel closestPixel = null;
+
+        if (closestNode == null) {
+            var closestDist = Double.POSITIVE_INFINITY;
+            for (var pixel : graph.getNodes()) {
+                //Find the distance between the pixel and the value
+                var distance = pixel.distance(value);
+
+                //If the distance is less than the closest distance, set the closest distance and pixel
+                if (distance < closestDist) {
+                    closestDist = distance;
+                    closestPixel = pixel;
+                }
+            }
+        } else {
+            closestPixel = closestNode.getValue();
+        }
+
+        return closestPixel;
     }
 
     //Create a Graph from LinkedList of Rooms

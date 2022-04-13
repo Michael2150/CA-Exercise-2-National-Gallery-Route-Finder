@@ -7,32 +7,57 @@ import com.ca.two.models.Room;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-;
 
 public class MainController implements Initializable {
     private LinkedList<Room> roomsList;
     private Graph<Room> rooms;
     private Graph<Pixel> pixels;
+    private boolean shouldCalcRoute = false;
 
     @FXML
     private ChoiceBox<Room> avoidChoiceBox;
+    @FXML
+    private ChoiceBox<Room> destinationChoiceBox;
     @FXML
     private ListView<Room> listViewAvoid;
     @FXML
     private ListView<Room> listViewWaypoints;
     @FXML
+    private ProgressIndicator pixelsLoader;
+    @FXML
+    private Label pixelsStatusLabel;
+    @FXML
+    private ProgressIndicator roomsLoader;
+    @FXML
+    private ChoiceBox<Room> startChoiceBox;
+    @FXML
+    private Label statusLabel;
+    @FXML
     private ChoiceBox<Room> wayPointChoiceBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setupThreads();
         initData();
         setupListViewAndChoiceBoxes();
+    }
+
+    Thread loadPixelsGraphThread;
+    private void setupThreads() {
+        loadPixelsGraphThread = new Thread(() -> {
+            pixels = DataAccess.readInMask();
+            System.out.println(pixels);
+        });
     }
 
     private void initData(){
@@ -40,11 +65,7 @@ public class MainController implements Initializable {
         rooms = DataAccess.createGraph(roomsList);
         System.out.println(rooms);
 
-        Thread thread = new Thread(() -> {
-            pixels = DataAccess.readInMask();
-            System.out.println(pixels);
-        });
-        thread.start();
+        loadPixelsGraphThread.start();
     }
 
     private void setupListViewAndChoiceBoxes() {
@@ -83,5 +104,36 @@ public class MainController implements Initializable {
             if (newValue != null)
                 listViewAvoid.getItems().add(newValue);
         });
+
+        //Set up the start and destination choice boxes.
+        startChoiceBox.getItems().addAll(roomsList);
+        destinationChoiceBox.getItems().addAll(roomsList);
+
+        //When the choice box's values change make sure the other choice box has all the rooms except the selected one
+        startChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                destinationChoiceBox.getItems().clear();
+                destinationChoiceBox.getItems().addAll(roomsList);
+                destinationChoiceBox.getItems().remove(newValue);
+            }
+        });
+        destinationChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                startChoiceBox.getItems().clear();
+                startChoiceBox.getItems().addAll(roomsList);
+                startChoiceBox.getItems().remove(newValue);
+            }
+        });
+    }
+
+
+    @FXML
+    void btnCalculateClicked(MouseEvent event) {
+
+    }
+
+    @FXML
+    void btnClearClicked(MouseEvent event) {
+
     }
 }
