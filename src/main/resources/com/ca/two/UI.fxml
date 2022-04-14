@@ -43,11 +43,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ca.two.MainController">
+<VBox prefHeight="720.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ca.two.MainController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="900.0" minWidth="900.0" prefHeight="-1.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
       <children>
-            <AnchorPane layoutX="536.0" layoutY="9.0" maxHeight="150.0" maxWidth="1.7976931348623157E308" minHeight="220.0" minWidth="-Infinity" prefHeight="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane layoutX="536.0" layoutY="9.0" maxHeight="150.0" maxWidth="1.7976931348623157E308" minHeight="240.0" minWidth="-Infinity" prefHeight="150.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ListView fx:id="listViewAvoid" layoutX="678.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0" />
                   <ListView fx:id="listViewWaypoints" layoutX="655.0" layoutY="40.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="210.0" AnchorPane.topAnchor="30.0" />
@@ -67,8 +67,8 @@
                   <ChoiceBox fx:id="startChoiceBox" layoutX="100.0" layoutY="28.0" prefWidth="150.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="28.0" />
                   <Label layoutX="11.0" layoutY="32.0" text="Starting Point" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="32.0" />
                   <Label layoutX="10.0" layoutY="62.0" text="Destination" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="62.0" />
-                  <Button layoutX="135.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#btnCalculateClicked" prefHeight="25.0" prefWidth="121.0" text="Calculate Route" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="135.0" />
-                  <Button layoutX="11.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#btnClearClicked" prefHeight="25.0" prefWidth="121.0" text="Clear Map &amp; Route" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="11.0" />
+                  <Button layoutX="135.0" layoutY="168.0" mnemonicParsing="false" onMouseClicked="#btnCalculateClicked" prefHeight="25.0" prefWidth="121.0" text="Calculate Route" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="135.0" />
+                  <Button layoutX="8.0" layoutY="188.0" mnemonicParsing="false" onMouseClicked="#btnClearClicked" prefHeight="25.0" prefWidth="121.0" text="Clear Map &amp; Route" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="8.0" />
                   <Label alignment="CENTER" layoutX="14.0" layoutY="5.0" prefWidth="250.0" text="Starting &amp; Destination Points" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0">
                      <font>
                         <Font name="System Bold" size="13.0" />
@@ -79,13 +79,15 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <CheckBox layoutX="26.0" layoutY="110.0" mnemonicParsing="false" text="1200 - 1500" />
-                  <CheckBox layoutX="26.0" layoutY="127.0" mnemonicParsing="false" text="1500 - 1600" />
-                  <CheckBox layoutX="138.0" layoutY="110.0" mnemonicParsing="false" text="1600 - 1700" />
-                  <CheckBox layoutX="138.0" layoutY="127.0" mnemonicParsing="false" text="1700 - 1930" />
-                  <Label fx:id="lblStatus" layoutX="13.0" layoutY="197.0" prefHeight="17.0" prefWidth="250.0" text="Status" textFill="#868686" />
+                  <CheckBox fx:id="chkTimeOne" layoutX="26.0" layoutY="110.0" mnemonicParsing="false" text="1200 - 1500" />
+                  <CheckBox fx:id="chkTimeTwo" layoutX="26.0" layoutY="127.0" mnemonicParsing="false" text="1500 - 1600" />
+                  <CheckBox fx:id="chkTimeThree" layoutX="138.0" layoutY="110.0" mnemonicParsing="false" text="1600 - 1700" />
+                  <CheckBox fx:id="chkTimeFour" layoutX="138.0" layoutY="127.0" mnemonicParsing="false" text="1700 - 1930" />
+                  <Label fx:id="lblStatus" layoutX="10.0" layoutY="217.0" prefHeight="17.0" prefWidth="250.0" text="Status" textFill="#868686" />
+                  <CheckBox fx:id="chkIncludeWaypoints" layoutX="26.0" layoutY="154.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="140.0" text="Must Include Waypoints" wrapText="true" />
+                  <CheckBox fx:id="chkShortestPath" layoutX="138.0" layoutY="154.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="140.0" text="Shortest Path" wrapText="true" />
                </children></AnchorPane>
-            <AnchorPane layoutX="3.0" layoutY="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="225.0">
+            <AnchorPane layoutX="3.0" layoutY="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="245.0">
                <children>
                   <ImageView fitHeight="480.0" fitWidth="675.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>

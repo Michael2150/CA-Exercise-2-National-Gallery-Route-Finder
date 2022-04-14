@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -38,6 +39,18 @@ public class MainController implements Initializable {
     private Label lblStatus;
     @FXML
     private ChoiceBox<Room> wayPointChoiceBox;
+    @FXML
+    private CheckBox chkIncludeWaypoints;
+    @FXML
+    private CheckBox chkShortestPath;
+    @FXML
+    private CheckBox chkTimeFour;
+    @FXML
+    private CheckBox chkTimeOne;
+    @FXML
+    private CheckBox chkTimeThree;
+    @FXML
+    private CheckBox chkTimeTwo;
     @FXML
     private ImageView routeOverlay;
 
