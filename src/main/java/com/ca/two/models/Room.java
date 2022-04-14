@@ -14,6 +14,7 @@ public class Room {
     private String image_url;
     private Pixel position;
     private String timePeriod;
+    private float weight;
 
     public Room() {}
 
@@ -72,6 +73,13 @@ public class Room {
 
     public void setTimePeriod(String timePeriod) {
         this.timePeriod = timePeriod;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+    public float getWeight() {
+        return weight;
     }
 
     public Color getColor() {

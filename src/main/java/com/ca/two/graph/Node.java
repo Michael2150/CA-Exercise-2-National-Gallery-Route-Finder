@@ -92,7 +92,7 @@ public class Node<T> implements Serializable {
     //ToString
     public String toString() {
         var sb = new StringBuilder();
-        sb.append("Node: Data[").append(value).append("] Edges[").append(edges.size()).append("] Average Weight[").append(getAverageEdgeWeight()).append("]");
+        sb.append("Node: Data[").append(value).append("] Edges[").append(edges.size()).append("] AvgWeight[").append(getAverageEdgeWeight()).append("]");
         return sb.toString();
     }
 
@@ -107,5 +107,27 @@ public class Node<T> implements Serializable {
             sum += weight;
         }
         return sum / edges.size();
+    }
+
+    public int getDistance(Node<T> node) {
+        //Go through each edge and neighbors and count the hops to get to the destination
+        int distance = 0;
+        LinkedList<Node<T>> visited = new LinkedList<>();
+        LinkedList<Node<T>> queue = new LinkedList<>();
+        queue.add(this);
+        while (!queue.isEmpty()) {
+            Node<T> current = queue.remove();
+            visited.add(current);
+            if (current.equals(node)) {
+                break;
+            }
+            for (Edge<T> edge : current.getEdges()) {
+                if (!visited.contains(edge.getTo())) {
+                    queue.add(edge.getTo());
+                }
+            }
+            distance++;
+        }
+        return distance;
     }
 }

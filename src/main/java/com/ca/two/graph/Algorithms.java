@@ -22,7 +22,7 @@ public class Algorithms {
             throw new IllegalArgumentException("start or end node is not in the graph");
 
         //Create variables
-        HashMap<Node<T>, Float> distances = new HashMap<>();
+        HashMap<Node<T>, Float> weights = new HashMap<>();
         HashMap<Node<T>, Node<T>> previous = new HashMap<>();
         HashMap<Node<T>, Boolean> visited = new HashMap<>();
 
@@ -31,13 +31,12 @@ public class Algorithms {
         PriorityQueue<Edge<T>> queue = new PriorityQueue<>(comparator);
 
         //Set up the variables
-        for (T nodeVal : graph.getNodes()) {
-            Node<T> node = graph.getNode(nodeVal);
-            distances.put(node, Float.MAX_VALUE);
+        for (Node<T> node : graph.getNodes()) {
+            weights.put(node, Float.MAX_VALUE);
             previous.put(node, null);
             visited.put(node, false);
         }
-        distances.put(begin, 0f);
+        weights.put(begin, 0f);
 
         //Do actual algorithm
         //Add the beginning node
@@ -58,9 +57,9 @@ public class Algorithms {
             for (var neighbor : closestNode.getEdges()) {
                 var neighborNode = neighbor.getTo();
                 if (!visited.get(neighborNode)) {
-                    var newDistance = distances.get(closestNode) + neighbor.getWeight();
-                    if (newDistance < distances.get(neighborNode)) {
-                        distances.put(neighborNode, newDistance);
+                    var newWeight = weights.get(closestNode) + neighbor.getWeight();
+                    if (newWeight < weights.get(neighborNode)) {
+                        weights.put(neighborNode, newWeight);
                         previous.put(neighborNode, closestNode);
                     }
                     queue.add(new Edge<>(closestNode, neighborNode, neighbor.getWeight()));
@@ -111,11 +110,11 @@ public class Algorithms {
     }
 
     //Set all the connections in a graph to the same weight
-    public static <T> void setAllWeights(Graph<T> graph, float weight) {
-        for (var val : graph.getNodes()) {
-            var node = graph.getNode(val);
+    public static void setAllWeights(Graph<Room> graph) {
+        for (var node : graph.getNodes()) {
             for (var edge : node.getEdges()) {
-                node.setEdgeWeight(edge.getTo(), weight);
+                var newWeight = (edge.getTo().getValue().getWeight() + edge.getFrom().getValue().getWeight())/2;
+                node.setEdgeWeight(edge.getTo(), newWeight);
             }
         }
     }
@@ -142,7 +141,7 @@ public class Algorithms {
                         if (!nodes.contains(edge.getTo())) {
                             newNodes.add(edge.getTo());
                             edgeDiffusion.put(edge, i);
-                            sign.put(edge, listViewWaypoints.getItems().contains(waypoint) ? 1 : -1);
+                            sign.put(edge, listViewWaypoints.getItems().contains(waypoint) ? -1 : +1);
                         }
                     }
                 }
@@ -154,6 +153,19 @@ public class Algorithms {
                 float diff = (float) (diffusionDepth * diffusionWeight - (edgeDiffusion.get(edge) * diffusionWeight));
                 diff = sign.get(edge) * diff;
                 edge.setWeight(edge.getWeight() + diff);
+            }
+        }
+
+        //Get the lowest weight
+        float lowestWeight = Float.MAX_VALUE;
+        for (var edge : rooms.getEdges()) {
+            if (edge.getWeight() < lowestWeight)
+                lowestWeight = edge.getWeight();
+        }
+        if (lowestWeight < 0){
+            //Add all the weights up with the absolute value of the lowest weight
+            for (var edge : rooms.getEdges()) {
+                edge.setWeight(edge.getWeight() + Math.abs(lowestWeight));
             }
         }
     }

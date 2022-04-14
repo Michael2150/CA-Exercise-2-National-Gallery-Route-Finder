@@ -8,10 +8,7 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -40,9 +37,11 @@ public class MainController implements Initializable {
     @FXML
     private ChoiceBox<Room> wayPointChoiceBox;
     @FXML
-    private CheckBox chkIncludeWaypoints;
+    private RadioButton chkIncludeWaypoints;
     @FXML
-    private CheckBox chkShortestPath;
+    private RadioButton chkShortestPath;
+    @FXML
+    private ToggleGroup pathTypeGroup;
     @FXML
     private CheckBox chkTimeFour;
     @FXML
@@ -125,36 +124,6 @@ public class MainController implements Initializable {
         destinationChoiceBox.getItems().addAll(roomsList);
     }
 
-    @FXML
-    void btnCalculateClicked(MouseEvent event) {
-        //TEST
-        startChoiceBox.getSelectionModel().select(getRoomWithID(66));
-        destinationChoiceBox.getSelectionModel().select(getRoomWithID(33));
-        listViewAvoid.getItems().addAll(getRoomWithID(10), getRoomWithID(11));
-        listViewWaypoints.getItems().addAll(getRoomWithID(26), getRoomWithID(27), getRoomWithID(28));
-
-        //Start a timer
-        long startTime = System.currentTimeMillis();
-
-        setStatus("Setting up weights...");
-
-        Algorithms.setAllWeights(rooms, 0.5f);
-        Algorithms.setupGraphWeights(rooms, 5f, 0.1f, listViewWaypoints, listViewAvoid);
-
-        setStatus("Running Dijkstra's algorithm...");
-        var startRoom = startChoiceBox.getSelectionModel().getSelectedItem();
-        var destinationRoom = destinationChoiceBox.getSelectionModel().getSelectedItem();
-        var results = Algorithms.Dijkstra(rooms, startRoom, destinationRoom);
-
-        routeListView.getItems().clear();
-        routeListView.getItems().addAll(results);
-
-        //Set the status to the time taken
-        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
-
-        debug_graph(results);
-    }
-
     private void debug_graph(LinkedList<Room> results) {
         //print the depth and weight and if the graph includes the waypoints and does not include the to avoid
         if (rooms.getNodes().containsAll(listViewWaypoints.getItems()) && !rooms.getNodes().containsAll(listViewAvoid.getItems())) {
@@ -183,6 +152,104 @@ public class MainController implements Initializable {
     @FXML
     void btnClearClicked(MouseEvent event) {
         routeListView.getItems().clear();
+    }
+
+    @FXML
+    void btnBFSClicked(MouseEvent event) {
+        //TESTING
+        listViewAvoid.getItems().clear();
+        listViewWaypoints.getItems().clear();
+        startChoiceBox.getSelectionModel().select(getRoomWithID(42));
+        destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
+        //END TESTING
+
+        //Get the start and destination rooms
+        Room start = startChoiceBox.getSelectionModel().getSelectedItem();
+        Room destination = destinationChoiceBox.getSelectionModel().getSelectedItem();
+
+        var results = Algorithms.BFS(rooms, start, destination);
+
+        debug_graph(results);
+    }
+
+    @FXML
+    void btnDFSClicked(MouseEvent event) {
+
+    }
+
+    @FXML
+    void btnDijkstraClicked(MouseEvent event) {
+//TEST
+        listViewAvoid.getItems().clear();
+        listViewWaypoints.getItems().clear();
+        startChoiceBox.getSelectionModel().select(getRoomWithID(42));
+        destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
+        listViewAvoid.getItems().addAll(getRoomWithID(10), getRoomWithID(11));
+        listViewWaypoints.getItems().addAll(getRoomWithID(26), getRoomWithID(27), getRoomWithID(28));
+
+        //Clear the route list view
+        btnClearClicked(null);
+
+        //Start a timer
+        long startTime = System.currentTimeMillis();
+
+        setStatus("Setting up weights...");
+
+        Algorithms.setAllWeights(rooms);
+
+        if (!shouldGetShortestPath()) //If we're not getting the shortest path, we need to set the weights of the waypoints
+            Algorithms.setupGraphWeights(rooms, 5f, 0.1f, listViewWaypoints, listViewAvoid);
+
+        setStatus("Running Dijkstra's algorithm...");
+
+        var startRoom = startChoiceBox.getSelectionModel().getSelectedItem();
+        var destinationRoom = destinationChoiceBox.getSelectionModel().getSelectedItem();
+        LinkedList<Room> results = new LinkedList<>();
+
+        if (shouldIncludeWaypoints()){
+            LinkedList<Node<Room>> waypointList = new LinkedList<>();
+            var startNode = rooms.getNode(startRoom);
+            var destinationNode = rooms.getNode(destinationRoom);
+
+            waypointList.add(startNode); //Add the start room to the list
+            listViewWaypoints.getItems().forEach(room -> waypointList.add(rooms.getNode(room))); //Add all the waypoints to the list
+            waypointList.add(destinationNode); //Add the destination room to the list
+
+            //Sort the waypoints away from the start room yet closer to the destination room
+            waypointList.sort(Comparator.comparingInt(node -> {
+                var startToWaypoint = startNode.getDistance(node);
+                var destinationToWaypoint = destinationNode.getDistance(node);
+                return startToWaypoint - destinationToWaypoint;
+            }));
+
+            //Get the path between each waypoint in the waypoint list
+            results.add(startRoom);
+            for (int i = 0; i < waypointList.size() - 1; i++) {
+                var currentNode = waypointList.get(i).getValue();
+                var nextNode = waypointList.get(i + 1).getValue();
+                var d = Algorithms.Dijkstra(rooms, currentNode, nextNode);
+                d.remove(); //Remove the start room from the path
+                results.addAll(d);
+            }
+
+        } else {
+            results = Algorithms.Dijkstra(rooms, startRoom, destinationRoom);
+        }
+
+        routeListView.getItems().clear();
+        routeListView.getItems().addAll(results);
+
+        //Set the status to the time taken
+        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
+
+        debug_graph(results);
+    }
+
+    private boolean shouldIncludeWaypoints() {
+        return pathTypeGroup.getSelectedToggle() == chkIncludeWaypoints;
+    }
+    private boolean shouldGetShortestPath() {
+        return pathTypeGroup.getSelectedToggle() == chkShortestPath;
     }
 
     private Room getRoomWithID(int id){

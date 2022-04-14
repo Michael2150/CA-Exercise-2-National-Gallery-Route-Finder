@@ -32,7 +32,8 @@ public class DataAccess {
         final int ROOM_IMAGE_URL = 4;
         final int ROOM_X = 5;
         final int ROOM_Y = 6;
-        final int ROOM_TIME_PERIOD = 7;
+        final int ROOM_WEIGHT = 7;
+        final int ROOM_TIME_PERIOD = 8;
 
         try (FileReader fr = new FileReader(file)) { //Get the FileReader
             try (BufferedReader br = new BufferedReader(fr)) { //Get the BufferedReader
@@ -56,6 +57,7 @@ public class DataAccess {
                     room.setName(values[ROOM_NAME]);
                     room.setDescription(values[ROOM_DESCRIPTION]);
                     room.setImage_url(values[ROOM_IMAGE_URL]);
+                    room.setWeight(Float.parseFloat(values[ROOM_WEIGHT]));
 
                     if (values.length <= ROOM_TIME_PERIOD){
                         room.setTimePeriod("");
@@ -145,7 +147,7 @@ public class DataAccess {
 
         if (closestNode == null) {
             var closestDist = Double.POSITIVE_INFINITY;
-            for (var pixel : graph.getNodes()) {
+            for (var pixel : graph.getNodeValues()) {
                 //Find the distance between the pixel and the value
                 var distance = pixel.distance(value);
 

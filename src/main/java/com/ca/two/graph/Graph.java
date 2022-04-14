@@ -1,5 +1,7 @@
 package com.ca.two.graph;
 
+import com.ca.two.models.Room;
+
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -142,13 +144,18 @@ public class Graph<T> implements Serializable {
         return false;
     }
 
-    //Return all the node values in the graph.
-    public LinkedList<T> getNodes() {
-        var nodes = new LinkedList<T>();
-        for (var node : this.nodes) {
-            nodes.add(node.getValue());
+    //Return all the nodes in the graph.
+    public LinkedList<Node<T>> getNodes() {
+        return new LinkedList<Node<T>>(this.nodes);
+    }
+
+    //Returns all the node values in the graph.
+    public LinkedList<T> getNodeValues() {
+        var values = new LinkedList<T>();
+        for (var node : nodes) {
+            values.add(node.getValue());
         }
-        return nodes;
+        return values;
     }
 
     //Returns true if there is a path between two nodes, false if not.
@@ -183,5 +190,18 @@ public class Graph<T> implements Serializable {
         var sb = new StringBuilder();
         sb.append("Graph: Node Count: ").append(size()).append(" Edge Count: ").append(getEdgeCount());
         return sb.toString();
+    }
+
+    public Node<T> getClosestNode(Node<T> startNode, LinkedList<Node<T>> listOfNodes) {
+        Node<T> closestNode = null;
+        int closestDistance = Integer.MAX_VALUE;
+        for (Node<T> node : listOfNodes) {
+            int distance = startNode.getDistance(node);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestNode = node;
+            }
+        }
+        return closestNode;
     }
 }
