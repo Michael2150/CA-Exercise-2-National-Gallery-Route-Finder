@@ -163,11 +163,22 @@ public class MainController implements Initializable {
         destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
         //END TESTING
 
+        //Start the timer
+        long startTime = System.currentTimeMillis();
+
+        //Set the status label
+        setStatus("Running Breadth First Search Algorithm...");
+
         //Get the start and destination rooms
         Room start = startChoiceBox.getSelectionModel().getSelectedItem();
         Room destination = destinationChoiceBox.getSelectionModel().getSelectedItem();
 
         var results = Algorithms.BFS(rooms, start, destination);
+
+        //Set the status to the time taken
+        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
+
+        loadRouteResults(results);
 
         debug_graph(results);
     }
@@ -236,11 +247,10 @@ public class MainController implements Initializable {
             results = Algorithms.Dijkstra(rooms, startRoom, destinationRoom);
         }
 
-        routeListView.getItems().clear();
-        routeListView.getItems().addAll(results);
-
         //Set the status to the time taken
         setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
+
+        loadRouteResults(results);
 
         debug_graph(results);
     }
@@ -250,6 +260,11 @@ public class MainController implements Initializable {
     }
     private boolean shouldGetShortestPath() {
         return pathTypeGroup.getSelectedToggle() == chkShortestPath;
+    }
+
+    private void loadRouteResults(LinkedList<Room> results) {
+        routeListView.getItems().clear();
+        routeListView.getItems().addAll(results);
     }
 
     private Room getRoomWithID(int id){

@@ -43,7 +43,7 @@ public class Algorithms {
         queue.add(new Edge<>(begin, begin, 1f));
 
         //While there are still nodes to visit
-        while (!queue.isEmpty() || !visited.get(end)) {
+        while (!queue.isEmpty() && !visited.get(end)) {
             var closestEdge = queue.poll();
             var closestNode = closestEdge.getTo();
 
@@ -95,17 +95,39 @@ public class Algorithms {
 
         //Create variables
         HashMap<Node<T>, Boolean> visited = new HashMap<>();
-        LinkedList<T> path = new LinkedList<>();
+        HashMap<Node<T>, Node<T>> previous = new HashMap<>();
+        LinkedList<Node<T>> queue = new LinkedList<>();
 
-        //Create queue
-        Queue<Node<T>> queue = new LinkedList<>();
+        //Set up the variables
+        for (Node<T> node : graph.getNodes()) {
+            visited.put(node, false);
+            previous.put(node, null);
+        }
+        visited.put(begin, true);
         queue.add(begin);
 
         //Do actual algorithm
-        while (!queue.isEmpty()) {
-            var current = queue.poll();
-
+        Node<T> current;
+        while (!queue.isEmpty() && !visited.get(end)) {
+            current = queue.removeFirst();
+            for (var neighbor : current.getEdges()) {
+                var neighborNode = neighbor.getTo();
+                if (!visited.get(neighborNode)) {
+                    visited.put(neighborNode, true);
+                    previous.put(neighborNode, current);
+                    queue.add(neighborNode);
+                }
+            }
         }
+
+        //Create the path
+        LinkedList<T> path = new LinkedList<>();
+        current = end;
+        while (previous.get(current) != null) {
+            path.addFirst(current.getValue());
+            current = previous.get(current);
+        }
+        path.addFirst(current.getValue());
         return path;
     }
 
