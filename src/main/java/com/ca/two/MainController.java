@@ -10,6 +10,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -158,7 +159,7 @@ public class MainController implements Initializable {
         setStatus("Loading route image...");
 
         //Generate the route image
-        loadRouteImage(results);
+        loadImageView(results);
 
         //Set the status to the time taken
         setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)" + (pixelsLoaded() ? "" : " (Path could not be plotted, pixels still loading...) "));
@@ -188,42 +189,23 @@ public class MainController implements Initializable {
         setStatus("Generating all paths...");
 
         if (pixelsLoaded()) {
-            //Get the path with the least and most amount of steps
-            LinkedList<Room> leastStepsPath = null;
-            LinkedList<Room> mostStepsPath = null;
-            var leastSteps = Integer.MAX_VALUE;
-            var mostSteps = 0;
-            for (var path : results) {
-                if (path.size() < leastSteps) {
-                    leastSteps = path.size();
-                    leastStepsPath = path;
-                }
-                if (path.size() > mostSteps) {
-                    mostSteps = path.size();
-                    mostStepsPath = path;
-                }
-            }
-
-
-
-
             var paths = new LinkedList<LinkedList<Pixel>>();
             for (var result : results) {
                 //print the index of the result out of the results
                 System.out.println("Result: " + results.indexOf(result)  + " of " + results.size());
 
-                var path = new LinkedList<Pixel>();
-                for (int i = 0; i < result.size() - 1; i++) {
-                    var point1 = result.get(i).getPosition();
-                    var point2 = result.get(i + 1).getPosition();
-                    var segment = Algorithms.BFS(pixels, point1, point2);
-                    path.addAll(segment);
-                }
+                //Get the path
+                var path = Algorithms.getBFSPixelsBetweenRooms(pixels, result);
+
+                //Add the path to the list of paths
                 paths.add(path);
             }
 
             //Set the status to loading the route image
             setStatus("Loading route image...");
+
+            //Generate the route image
+
         }
 
         //Set the status to the time taken
@@ -287,7 +269,7 @@ public class MainController implements Initializable {
         }
 
         setStatus("Plotting path...");
-        loadRouteImage(results);
+        loadImageView(results);
 
         //Set the status to the time taken
         setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)" + (pixelsLoaded() ? "" : " (Path could not be plotted, pixels still loading...) "));
@@ -297,12 +279,10 @@ public class MainController implements Initializable {
         debug_graph(results);
     }
 
-    private void loadRouteImage(LinkedList<Room> route) {
-        //Get the image of the route
-        var image = Algorithms.getRouteImage(route, routeOverlay, Color.color(1,0,0,1));
-
-        //Set the image view to the image
-        routeOverlay.setImage(image);
+    private void loadImageView(LinkedList<Room> results) {
+        var pxls = Algorithms.getBFSPixelsBetweenRooms(pixels , results);
+        var img = Algorithms.getPathImageForPixels((int) routeOverlay.getFitWidth(), (int) routeOverlay.getFitHeight(), pxls);
+        routeOverlay.setImage(img);
     }
 
     private boolean shouldIncludeWaypoints() {
@@ -339,14 +319,13 @@ public class MainController implements Initializable {
         Platform.runLater(() -> setStatus(status));
     }
 
-
     private void testing(){
-        listViewAvoid.getItems().clear();
-        listViewWaypoints.getItems().clear();
-        startChoiceBox.getSelectionModel().select(getRoomWithID(42));
-        destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
-        listViewAvoid.getItems().addAll(getRoomWithID(10), getRoomWithID(11));
-        listViewWaypoints.getItems().addAll(getRoomWithID(26), getRoomWithID(27), getRoomWithID(28));
+//        listViewAvoid.getItems().clear();
+//        listViewWaypoints.getItems().clear();
+//        startChoiceBox.getSelectionModel().select(getRoomWithID(42));
+//        destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
+//        listViewAvoid.getItems().addAll(getRoomWithID(10), getRoomWithID(11));
+//        listViewWaypoints.getItems().addAll(getRoomWithID(26), getRoomWithID(27), getRoomWithID(28));
     }
 
     private void debug_graph(LinkedList<Room> results) {

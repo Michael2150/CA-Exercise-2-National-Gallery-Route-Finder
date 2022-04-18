@@ -1,5 +1,6 @@
 package com.ca.two.graph;
 
+import com.ca.two.models.Pixel;
 import com.ca.two.models.Room;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -266,10 +267,32 @@ public class Algorithms {
         }
     }
 
-    public static Image getRouteImage(LinkedList<Room> route, ImageView routeOverlay, Color color) {
-        //Get the width and height of the image]
-        int width = (int) routeOverlay.getFitWidth();
-        int height = (int) routeOverlay.getFitHeight();
+    public static LinkedList<Pixel> getBFSPixelsBetweenRooms(Graph<Pixel> pixels, LinkedList<Room> rooms){
+        if (pixels == null || rooms == null)
+            return null;
+
+        var path = new LinkedList<Pixel>();
+        for (int i = 0; i < rooms.size() - 1; i++) {
+            var point1 = rooms.get(i).getPosition();
+            var point2 = rooms.get(i + 1).getPosition();
+            var segment = Algorithms.BFS(pixels, point1, point2);
+            path.addAll(segment);
+        }
+        return path;
+    }
+
+    public static Image getPathImageForPixels(int width, int height, LinkedList<Pixel> allPixels){
+        if (allPixels == null)
+            return null;
+
+        var l = new LinkedList<LinkedList<Pixel>>();
+        l.add(allPixels);
+        return getPathImageForPixels(l, width, height);
+    }
+
+    public static Image getPathImageForPixels(LinkedList<LinkedList<Pixel>> allPixels, int width, int height){
+        if (allPixels == null)
+            return null;
 
         //Create a new image
         WritableImage image = new WritableImage(width, height);
@@ -277,21 +300,28 @@ public class Algorithms {
         //Get the pixelWriter
         PixelWriter pixelWriter = image.getPixelWriter();
 
-        //Write a circle for each room in the route
-        for (Room room : route) {
-            //Get the coordinates of the room
-            int x = (int) room.getPosition().getX();
-            int y = (int) room.getPosition().getY();
-
-            //Draw a circle
-            for (int i = -5; i <= 5; i++) {
-                for (int j = -5; j <= 5; j++) {
-                    if (i * i + j * j <= 25)
-                        pixelWriter.setColor(x + i, y + j, Color.RED);
+        //Set the pixels
+        for (var pixels : allPixels) {
+            var randColor = getRandomColor();
+            for (var pixel : pixels) {
+                //Write the pixel and a radius around it
+                var radius = 1;
+                for (int x = -radius; x <= radius; x++) {
+                    for (int y = -radius; y <= radius; y++) {
+                        //Check if the pixel is within the image
+                        if (pixel.getX() + x >= 0 && pixel.getX() + x < width && pixel.getY() + y >= 0 && pixel.getY() + y < height) {
+                            pixelWriter.setColor((int) (pixel.getX() + x), (int) (pixel.getY() + y), randColor);
+                        }
+                    }
                 }
             }
         }
 
         return image;
+    }
+
+    public static Color getRandomColor(){
+        Random random = new Random();
+        return new Color(random.nextFloat(), random.nextFloat(), random.nextFloat(), 1);
     }
 }
