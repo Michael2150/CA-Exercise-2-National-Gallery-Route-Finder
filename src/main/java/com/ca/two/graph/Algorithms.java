@@ -1,7 +1,6 @@
 package com.ca.two.graph;
 
 import com.ca.two.models.Room;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -137,6 +136,75 @@ public class Algorithms {
         return path;
     }
 
+    /**
+     * Depth first search
+     * @param graph graph
+     * @param start start Node
+     * @param destination end Node
+     * @param <T> type of node
+     * @return A List of all possible paths from the start node to the end node.
+     */
+    public static <T> LinkedList<LinkedList<T>> DFSAllPaths(Graph<T> graph , T start, T destination) {
+        //Check inputs
+        var begin = graph.getNode(start);
+        var end = graph.getNode(destination);
+        if (begin == null || end == null)
+            throw new IllegalArgumentException("start or end node is not in the graph");
+
+        //Create variables
+        HashMap<Node<T>, Boolean> visited = new HashMap<>();
+        LinkedList<LinkedList<T>> paths = new LinkedList<>();
+
+        //Set up the variables
+        for (Node<T> node : graph.getNodes()) {
+            visited.put(node, false);
+        }
+
+        getAllPathsRecur(begin, end, visited, new LinkedList<>(), paths);
+
+        return paths;
+    }
+
+    /**
+     * Depth first search using the implementation from: <a href=https://www.geeksforgeeks.org/find-paths-given-source-destination/> Here </a>
+     * @param source source Node
+     * @param destination destination Node
+     * @param isVisited HashMap of visited nodes
+     * @param localPathList LinkedList of nodes in the current path working with
+     */
+    private static <T> void getAllPathsRecur(Node<T> source,
+                                             Node<T> destination,
+                                             HashMap<Node<T>, Boolean> isVisited,
+                                             List<T> localPathList,
+                                             List<LinkedList<T>> allPaths) {
+        // if match found then no need to traverse more till depth
+        if (source.equals(destination)){
+            allPaths.add(new LinkedList<>(localPathList));
+            return;
+        }
+
+        // Mark the current node
+        isVisited.put(source, true);
+
+        // Recur for all the vertices adjacent to current vertex
+        for (Edge<T> neighborEdge : source.getEdges()) {
+            var neighborNode = neighborEdge.getTo();
+            if (!isVisited.get(neighborNode)) {
+                // store current node
+                localPathList.add(neighborNode.getValue());
+
+                // recur for next node
+                getAllPathsRecur(neighborNode, destination, isVisited, localPathList, allPaths);
+
+                // remove current node
+                localPathList.remove(neighborNode.getValue());
+            }
+        }
+
+        // Mark the current node
+        isVisited.put(source, false);
+    }
+
     //Set all the connections in a graph to the same weight
     public static void setAllWeights(Graph<Room> graph) {
         for (var node : graph.getNodes()) {
@@ -198,7 +266,7 @@ public class Algorithms {
         }
     }
 
-    public static Image getRouteImage(LinkedList<Room> route, ImageView routeOverlay) {
+    public static Image getRouteImage(LinkedList<Room> route, ImageView routeOverlay, Color color) {
         //Get the width and height of the image]
         int width = (int) routeOverlay.getFitWidth();
         int height = (int) routeOverlay.getFitHeight();

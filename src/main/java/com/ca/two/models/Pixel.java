@@ -1,7 +1,6 @@
-package com.ca.two.graph;
+package com.ca.two.models;
 
 import javafx.geometry.Point2D;
-import javafx.geometry.Point3D;
 
 import java.io.Serializable;
 

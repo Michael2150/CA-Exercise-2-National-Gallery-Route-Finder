@@ -3,6 +3,7 @@ package com.ca.two;
 import com.ca.two.graph.*;
 import com.ca.two.listviews.RoomInfoListCell;
 import com.ca.two.listviews.RoomListCell;
+import com.ca.two.models.Pixel;
 import com.ca.two.models.Room;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -11,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.*;
@@ -69,6 +71,12 @@ public class MainController implements Initializable {
         Thread loadPixelsGraphThread;
         loadPixelsGraphThread = new Thread(() -> {
             setPixels(DataAccess.readInMask());
+
+            //For each room in rooms set the position to the closest pixel using the DataAccess.getClosestValue() method
+            for(Room room : roomsList){
+                room.setPosition(DataAccess.getClosestValue(pixels, room.getPosition()));
+            }
+
             System.out.println(pixels);
         });
 
@@ -127,6 +135,7 @@ public class MainController implements Initializable {
     @FXML
     void btnClearClicked(MouseEvent event) {
         routeListView.getItems().clear();
+        routeOverlay.setImage(null);
     }
 
     @FXML
@@ -145,8 +154,14 @@ public class MainController implements Initializable {
 
         var results = Algorithms.BFS(rooms, start, destination);
 
+        //Set the status to loading the route image
+        setStatus("Loading route image...");
+
+        //Generate the route image
+        loadRouteImage(results);
+
         //Set the status to the time taken
-        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
+        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)" + (pixelsLoaded() ? "" : " (Path could not be plotted, pixels still loading...) "));
 
         loadRouteResults(results);
 
@@ -155,7 +170,67 @@ public class MainController implements Initializable {
 
     @FXML
     void btnDFSClicked(MouseEvent event) {
+        testing();
 
+        //Start the timer
+        long startTime = System.currentTimeMillis();
+
+        //Set the status label
+        setStatus("Running Depth First Search Algorithm...");
+
+        //Get the start and destination rooms
+        Room start = startChoiceBox.getSelectionModel().getSelectedItem();
+        Room destination = destinationChoiceBox.getSelectionModel().getSelectedItem();
+
+        var results = Algorithms.DFSAllPaths(rooms, start, destination);
+
+        //Get All the paths from the results
+        setStatus("Generating all paths...");
+
+        if (pixelsLoaded()) {
+            //Get the path with the least and most amount of steps
+            LinkedList<Room> leastStepsPath = null;
+            LinkedList<Room> mostStepsPath = null;
+            var leastSteps = Integer.MAX_VALUE;
+            var mostSteps = 0;
+            for (var path : results) {
+                if (path.size() < leastSteps) {
+                    leastSteps = path.size();
+                    leastStepsPath = path;
+                }
+                if (path.size() > mostSteps) {
+                    mostSteps = path.size();
+                    mostStepsPath = path;
+                }
+            }
+
+
+
+
+            var paths = new LinkedList<LinkedList<Pixel>>();
+            for (var result : results) {
+                //print the index of the result out of the results
+                System.out.println("Result: " + results.indexOf(result)  + " of " + results.size());
+
+                var path = new LinkedList<Pixel>();
+                for (int i = 0; i < result.size() - 1; i++) {
+                    var point1 = result.get(i).getPosition();
+                    var point2 = result.get(i + 1).getPosition();
+                    var segment = Algorithms.BFS(pixels, point1, point2);
+                    path.addAll(segment);
+                }
+                paths.add(path);
+            }
+
+            //Set the status to loading the route image
+            setStatus("Loading route image...");
+        }
+
+        //Set the status to the time taken
+        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)" + (pixelsLoaded() ? "" : " (Path could not be plotted, pixels still loading...) "));
+
+        //Load the results
+        //loadRouteResults(results);
     }
 
     @FXML
@@ -215,7 +290,7 @@ public class MainController implements Initializable {
         loadRouteImage(results);
 
         //Set the status to the time taken
-        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
+        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)" + (pixelsLoaded() ? "" : " (Path could not be plotted, pixels still loading...) "));
 
         loadRouteResults(results);
 
@@ -224,7 +299,7 @@ public class MainController implements Initializable {
 
     private void loadRouteImage(LinkedList<Room> route) {
         //Get the image of the route
-        var image = Algorithms.getRouteImage(route, routeOverlay);
+        var image = Algorithms.getRouteImage(route, routeOverlay, Color.color(1,0,0,1));
 
         //Set the image view to the image
         routeOverlay.setImage(image);
@@ -235,6 +310,9 @@ public class MainController implements Initializable {
     }
     private boolean shouldGetShortestPath() {
         return pathTypeGroup.getSelectedToggle() == chkShortestPath;
+    }
+    private boolean pixelsLoaded() {
+        return pixels != null && pixels.size() > 0;
     }
 
     private void loadRouteResults(LinkedList<Room> results) {
@@ -254,14 +332,12 @@ public class MainController implements Initializable {
     private String status;
     private void setStatus(String status) {
         this.status = status;
-        lblStatus.setText(((pixels == null) ? "(Loading Graph of Pixels...) " : "") + status);
+        lblStatus.setText(((!pixelsLoaded()) ? "(Loading Graph of Pixels...) " : "") + status);
     }
     private void setPixels(Graph<Pixel> pixels) {
         this.pixels = pixels;
         Platform.runLater(() -> setStatus(status));
     }
-
-
 
 
     private void testing(){

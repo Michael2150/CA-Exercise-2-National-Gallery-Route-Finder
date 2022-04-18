@@ -1,7 +1,7 @@
 package com.ca.two;
 
 import com.ca.two.graph.Graph;
-import com.ca.two.graph.Pixel;
+import com.ca.two.models.Pixel;
 import com.ca.two.models.Room;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;

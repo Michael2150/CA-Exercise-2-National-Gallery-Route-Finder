@@ -1,6 +1,5 @@
 package com.ca.two.models;
 
-import com.ca.two.graph.Pixel;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
