@@ -124,31 +124,6 @@ public class MainController implements Initializable {
         destinationChoiceBox.getItems().addAll(roomsList);
     }
 
-    private void debug_graph(LinkedList<Room> results) {
-        //print the depth and weight and if the graph includes the waypoints and does not include the to avoid
-        if (rooms.getNodes().containsAll(listViewWaypoints.getItems()) && !rooms.getNodes().containsAll(listViewAvoid.getItems())) {
-            System.out.println("Diffusion depth: " + 5f + " Diffusion weight: " + 0.1f);
-        }
-
-        //Print the waypoints
-        StringBuilder sb = new StringBuilder();
-        sb.append("\nWaypoints: \n");
-        for (Room waypoint : listViewWaypoints.getItems()) {
-            sb.append(rooms.getNode(waypoint)).append(", \n");
-        }
-        //Print to avoid list
-        sb.append("\nAvoid \n");
-        for (Room avoid : listViewAvoid.getItems()) {
-            sb.append(rooms.getNode(avoid)).append(", \n");
-        }
-        //Print the results
-        sb.append("\nResults \n");
-        for (Room room : results) {
-            sb.append(rooms.getNode(room)).append(", \n");
-        }
-        System.out.println(sb.toString());
-    }
-
     @FXML
     void btnClearClicked(MouseEvent event) {
         routeListView.getItems().clear();
@@ -156,12 +131,7 @@ public class MainController implements Initializable {
 
     @FXML
     void btnBFSClicked(MouseEvent event) {
-        //TESTING
-        listViewAvoid.getItems().clear();
-        listViewWaypoints.getItems().clear();
-        startChoiceBox.getSelectionModel().select(getRoomWithID(42));
-        destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
-        //END TESTING
+        testing();
 
         //Start the timer
         long startTime = System.currentTimeMillis();
@@ -190,13 +160,7 @@ public class MainController implements Initializable {
 
     @FXML
     void btnDijkstraClicked(MouseEvent event) {
-//TEST
-        listViewAvoid.getItems().clear();
-        listViewWaypoints.getItems().clear();
-        startChoiceBox.getSelectionModel().select(getRoomWithID(42));
-        destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
-        listViewAvoid.getItems().addAll(getRoomWithID(10), getRoomWithID(11));
-        listViewWaypoints.getItems().addAll(getRoomWithID(26), getRoomWithID(27), getRoomWithID(28));
+        testing();
 
         //Clear the route list view
         btnClearClicked(null);
@@ -247,12 +211,23 @@ public class MainController implements Initializable {
             results = Algorithms.Dijkstra(rooms, startRoom, destinationRoom);
         }
 
+        setStatus("Plotting path...");
+        loadRouteImage(results);
+
         //Set the status to the time taken
         setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)");
 
         loadRouteResults(results);
 
         debug_graph(results);
+    }
+
+    private void loadRouteImage(LinkedList<Room> route) {
+        //Get the image of the route
+        var image = Algorithms.getRouteImage(route, routeOverlay);
+
+        //Set the image view to the image
+        routeOverlay.setImage(image);
     }
 
     private boolean shouldIncludeWaypoints() {
@@ -284,5 +259,42 @@ public class MainController implements Initializable {
     private void setPixels(Graph<Pixel> pixels) {
         this.pixels = pixels;
         Platform.runLater(() -> setStatus(status));
+    }
+
+
+
+
+    private void testing(){
+        listViewAvoid.getItems().clear();
+        listViewWaypoints.getItems().clear();
+        startChoiceBox.getSelectionModel().select(getRoomWithID(42));
+        destinationChoiceBox.getSelectionModel().select(getRoomWithID(21));
+        listViewAvoid.getItems().addAll(getRoomWithID(10), getRoomWithID(11));
+        listViewWaypoints.getItems().addAll(getRoomWithID(26), getRoomWithID(27), getRoomWithID(28));
+    }
+
+    private void debug_graph(LinkedList<Room> results) {
+        //print the depth and weight and if the graph includes the waypoints and does not include the to avoid
+        if (rooms.getNodes().containsAll(listViewWaypoints.getItems()) && !rooms.getNodes().containsAll(listViewAvoid.getItems())) {
+            System.out.println("Diffusion depth: " + 5f + " Diffusion weight: " + 0.1f);
+        }
+
+        //Print the waypoints
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nWaypoints: \n");
+        for (Room waypoint : listViewWaypoints.getItems()) {
+            sb.append(rooms.getNode(waypoint)).append(", \n");
+        }
+        //Print to avoid list
+        sb.append("\nAvoid \n");
+        for (Room avoid : listViewAvoid.getItems()) {
+            sb.append(rooms.getNode(avoid)).append(", \n");
+        }
+        //Print the results
+        sb.append("\nResults \n");
+        for (Room room : results) {
+            sb.append(rooms.getNode(room)).append(", \n");
+        }
+        System.out.println(sb.toString());
     }
 }

@@ -87,7 +87,7 @@
                   <CheckBox fx:id="chkTimeFour" layoutX="138.0" layoutY="127.0" mnemonicParsing="false" text="1700 - 1930" />
                   <Label fx:id="lblStatus" layoutX="13.0" layoutY="222.0" prefHeight="17.0" prefWidth="250.0" text="Status" textFill="#868686" AnchorPane.bottomAnchor="60.0" />
                   <Button layoutX="130.0" layoutY="247.0" mnemonicParsing="false" onMouseClicked="#btnBFSClicked" prefHeight="25.0" prefWidth="130.0" text="Breadth First Search" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="125.0" />
-                  <Button layoutX="11.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#btnClearClicked" prefHeight="25.0" prefWidth="110.0" text="Calculate Route" AnchorPane.bottomAnchor="2.0" />
+                  <Button layoutX="11.0" layoutY="273.0" mnemonicParsing="false" onMouseClicked="#btnClearClicked" prefHeight="25.0" prefWidth="110.0" text="Clear Route" AnchorPane.bottomAnchor="2.0" />
                   <Label alignment="CENTER" layoutX="10.0" layoutY="160.0" prefWidth="250.0" text="Path Type">
                      <font>
                         <Font name="System Bold" size="13.0" />

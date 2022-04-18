@@ -1,7 +1,13 @@
 package com.ca.two.graph;
 
 import com.ca.two.models.Room;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 import java.util.*;
 
@@ -190,5 +196,34 @@ public class Algorithms {
                 edge.setWeight(edge.getWeight() + Math.abs(lowestWeight));
             }
         }
+    }
+
+    public static Image getRouteImage(LinkedList<Room> route, ImageView routeOverlay) {
+        //Get the width and height of the image]
+        int width = (int) routeOverlay.getFitWidth();
+        int height = (int) routeOverlay.getFitHeight();
+
+        //Create a new image
+        WritableImage image = new WritableImage(width, height);
+
+        //Get the pixelWriter
+        PixelWriter pixelWriter = image.getPixelWriter();
+
+        //Write a circle for each room in the route
+        for (Room room : route) {
+            //Get the coordinates of the room
+            int x = (int) room.getPosition().getX();
+            int y = (int) room.getPosition().getY();
+
+            //Draw a circle
+            for (int i = -5; i <= 5; i++) {
+                for (int j = -5; j <= 5; j++) {
+                    if (i * i + j * j <= 25)
+                        pixelWriter.setColor(x + i, y + j, Color.RED);
+                }
+            }
+        }
+
+        return image;
     }
 }

@@ -9,7 +9,7 @@ id	Room Number	Room Description	Connections	Image	x	y	weight	time_period
 9	Room 9	Venice 1530 - 1600	"8,10,15"	https://www.nationalgallery.org.uk/media/8271/room-veronese-ng294-c-wide_20090403172312.jpg	225	270	0.2	1200-1500
 10	Room 10	The sacred and profane in sixteenth-century Italian art	"9,11"	https://www.nationalgallery.org.uk/media/8693/raphael-portrait-pope-julius-ii-ng27-c-wide.jpg	285	270	0.5	1200-1500
 11	Room 11	Veronese's 'Four Allegories of Love'	"5,10,12,14"	https://www.nationalgallery.org.uk/media/8527/veronese-allegory-love-iv-happy-union-ng1326-c-wide.jpg	325	270	0.5	1200-1500
-12	Room 12	Northern Italian Portraiture 1510–1580 	"11,49,50"	https://www.nationalgallery.org.uk/media/13563/n-0299-room-banner-675x230.jpg	365	270	0.5	1200-1500
+12	Room 12	Northern Italian Portraiture 1510-1580 	"11,49,50"	https://www.nationalgallery.org.uk/media/13563/n-0299-room-banner-675x230.jpg	365	270	0.5	1200-1500
 13	Sunley Room	Sunley Room Exhibition	"30,49"	https://www.nationalgallery.org.uk/media/hnnbk4ti/kehindewiley_desktopbanner_oct.jpg	375	240	0.5	
 14	Room 14	The Netherlands	"11,29"	https://www.nationalgallery.org.uk/media/8113/room-14-the-netherlands-wide.jpg	325	235	0.5	1200-1500
 15	Room 15	Divider room	"9,17,16,18,26,29"	https://www.nationalgallery.org.uk/media/8111/room-11-joachim-beuckelaer-wide.jpg	240	190	0.2	1600-1700
@@ -26,7 +26,7 @@ id	Room Number	Room Description	Connections	Image	x	y	weight	time_period
 26	Room 26	"Brueghel the Elder, van der Heyden, van de Velde"	"15,27"	"https://www.nationalgallery.org.uk/media/32986/n-0920-00-000022-hd.jpg?center=0.68199233716475094,0.32107843137254904&mode=crop&width=1920&height=360&rnd=132385450418070000"	270	165	0.5	1600-1700
 27	Room 27	"de Hooch, Saenredam, Vermeer"	"26,28"	"https://www.nationalgallery.org.uk/media/32902/n-0825-00-000026-hd.jpg?center=0.50203527815468119,0.515&mode=crop&width=1920&height=360&rnd=132385446600400000"	300	165	0.5	1600-1700
 28	Room 28	A New Art For A New Nation (1)	"25,27,29"	https://www.nationalgallery.org.uk/media/9434/focus-duyster-willem-soldiers-booty-barn-ng1386-c-wide-banner.jpg	325	165	0.5	1600-1700
-29	Room 29	French Painting 1600–1700	"14,15,28,30"	https://www.nationalgallery.org.uk/media/8119/room-19-nicolas-poussin-wide.jpg	325	190	0.1	1600-1700
+29	Room 29	French Painting 1600-1700	"14,15,28,30"	https://www.nationalgallery.org.uk/media/8119/room-19-nicolas-poussin-wide.jpg	325	190	0.1	1600-1700
 30	Room 30	Spain	"13,29,31,32"	https://www.nationalgallery.org.uk/media/8130/room-30-spain-wide.jpg	435	195	0.5	1600-1700
 31	Room 31	Room closed	30	https://www.nationalgallery.org.uk/media/8310/room-d.jpg	435	150	0.5	1600-1700
 32	Room 32	17th-century Italian paintings	"30,33,37"	https://www.nationalgallery.org.uk/media/23579/n-0172-top-banner-675x230.jpg	545	185	0.5	1600-1700
@@ -38,27 +38,27 @@ id	Room Number	Room Description	Connections	Image	x	y	weight	time_period
 38	Room 38	Canaletto and Guardi	"36,39"	https://www.nationalgallery.org.uk/media/8137/room-38-canaletto-guardi-wide.jpg	500	270	0.5	1700-1930
 39	Room 39	"Canaletto, Pittoni, and Tiepolo"	"38,49"	https://www.nationalgallery.org.uk/media/10528/n-6279-pittoni-nativity-event-banner.jpg	470	270	0.5	1700-1930
 40	Room 40	18th-century painting in Europe	"36,44"	https://www.nationalgallery.org.uk/media/23934/n-0201-event-banner.jpg	545	315	0.5	1700-1930
-41	Room 41	"Cézanne, Monet, Renoir"	"34,42"	"https://www.nationalgallery.org.uk/media/34533/n-6359-00-000039-hd.jpg?center=0.54285714285714282,0.41290322580645161&mode=crop&width=1920&height=360&rnd=132385909733670000"	645	345	0.5	1700-1930
+41	Room 41	"Cezanne, Monet, Renoir"	"34,42"	"https://www.nationalgallery.org.uk/media/34533/n-6359-00-000039-hd.jpg?center=0.54285714285714282,0.41290322580645161&mode=crop&width=1920&height=360&rnd=132385909733670000"	645	345	0.5	1700-1930
 42	Room 42	Room closed	"41,43"	https://www.nationalgallery.org.uk/media/8310/room-d.jpg	610	380	0.5	1700-1930
 43	Room 43	"Gauguin, Seurat, Van Gogh"	"42,44"	https://www.nationalgallery.org.uk/media/25477/675x230_may.jpg	580	370	0.5	1700-1930
-44	Room 44	"Cézanne, Degas, Monet"	"40,43,45"	https://www.nationalgallery.org.uk/media/4675/hub-monet-beach-trouville-ng3951-c-face-two-thirds.jpg	545	370	0.5	1700-1930
+44	Room 44	"Cezanne, Degas, Monet"	"40,43,45"	https://www.nationalgallery.org.uk/media/4675/hub-monet-beach-trouville-ng3951-c-face-two-thirds.jpg	545	370	0.5	1700-1930
 45	Room 45	"Constable, Corot and Ingres"	"44,48"	"https://www.nationalgallery.org.uk/media/33761/n-2652-00-000013-hd.jpg?center=0.60779220779220777,0.35045871559633029&mode=crop&width=1920&height=360&rnd=132385876562670000"	510	370	0.5	1700-1930
 46	Room 46	Gainsborough's Blue Boy	48	https://www.nationalgallery.org.uk/media/z2rpe0ay/blueboy_desktop-banner-with-copy-1920-x-700.jpg	470	380	0.5	
 47	Annenberg Court	Annenberg Court	"48,49"	https://www.nationalgallery.org.uk/media/8444/annenberg-court-lower-hall-c-wide.jpg	500	310	0.5	
 48	Main Vestibule	Main Vestibule	"1,2,45,46,47,49,50"	https://www.nationalgallery.org.uk/media/8405/mosaic-anrep16-defiance-winston-wide.jpg	470	350	0.5	
 49	Central Hall	Central Hall	"12,13,39,48,50"	https://www.nationalgallery.org.uk/media/8440/international-visitor-wilkins-c-wide_20090428133438.jpg	440	270	0.2	
 50	Shop	Shop	"12,48,49"	https://www.nationalgallery.org.uk/media/29323/shopping-feature-page-header.gif	380	300	0.5	
-51	Room 51	"Italy, 1250–1350"	"9,68,52,60"	https://www.nationalgallery.org.uk/media/8146/room-52-italy-1250-1350-wide.jpg	90	260	0.5	1200-1500
-52	Room 52	"Siena, 1300–1450"	"51,53"	https://www.nationalgallery.org.uk/media/10716/n-1139-00-000048-doc-crop-675x230.jpg	100	295	0.5	1200-1500
-53	Room 53	"Florence and Beyond, 1440–1470"	"52,54,59"	"https://www.nationalgallery.org.uk/media/32630/n-0583-00-000152-hd.jpg?center=0.44186046511627908,0.47797356828193832&mode=crop&width=1920&height=360&rnd=132385388489730000"	100	320	0.5	1200-1500
+51	Room 51	"Italy, 1250-1350"	"9,68,52,60"	https://www.nationalgallery.org.uk/media/8146/room-52-italy-1250-1350-wide.jpg	90	260	0.5	1200-1500
+52	Room 52	"Siena, 1300-1450"	"51,53"	https://www.nationalgallery.org.uk/media/10716/n-1139-00-000048-doc-crop-675x230.jpg	100	295	0.5	1200-1500
+53	Room 53	"Florence and Beyond, 1440-1470"	"52,54,59"	"https://www.nationalgallery.org.uk/media/32630/n-0583-00-000152-hd.jpg?center=0.44186046511627908,0.47797356828193832&mode=crop&width=1920&height=360&rnd=132385388489730000"	100	320	0.5	1200-1500
 54	Room 54	Mantegna and Crivelli	"53,55"	https://www.nationalgallery.org.uk/media/8153/room-59-carlo-crivelli-wide.jpg	100	350	0.5	1200-1500
-55	Room 55	"Venice and the Veneto, 1460–1510"	"54,56,57"	https://www.nationalgallery.org.uk/media/25506/cookies-policy-banner-675x231.jpg	100	380	0.5	1200-1500
+55	Room 55	"Venice and the Veneto, 1460-1510"	"54,56,57"	https://www.nationalgallery.org.uk/media/25506/cookies-policy-banner-675x231.jpg	100	380	0.5	1200-1500
 56	Room 56	Venice after 1500	55	https://www.nationalgallery.org.uk/media/25285/675x230.jpg	100	400	0.5	1200-1500
 57	Room 57	Ferrara and Bologna	"55,58,65"	https://www.nationalgallery.org.uk/media/8947/tura-muse-calliope-ng3070-c-wide-banner.jpg	60	390	0.5	1200-1500
 58	Room 58	Botticelli and Filippino Lippi	"57,59"	https://www.nationalgallery.org.uk/media/8910/calendar_page_botticelli_venus_and_mars_ng915_c_wide_banner.jpg	60	350	0.5	1200-1500
-59	Room 59	"Florence, 1460–1500"	"53,58,60,63"	https://www.nationalgallery.org.uk/media/9134/event-fillippino-lippi-virgin-child-saints-jerome-dominic-ng293-c-wide-banner.jpg	60	310	0.5	1200-1500
-60	Room 60	Florentine Altarpieces about 1350 – about 1460	"51,59,61"	https://www.nationalgallery.org.uk/media/ualofhuq/n-0569-01-000042-hd-1b.jpg	60	260	0.5	1200-1500
-61	Room 61	"Central Italy, 1480–1520"	"60,62"	https://www.nationalgallery.org.uk/media/8795/event-michelangelo-entombment-ng790-c-wide-banner.jpg	25	260	0.5	1200-1500
+59	Room 59	"Florence, 1460-1500"	"53,58,60,63"	https://www.nationalgallery.org.uk/media/9134/event-fillippino-lippi-virgin-child-saints-jerome-dominic-ng293-c-wide-banner.jpg	60	310	0.5	1200-1500
+60	Room 60	Florentine Altarpieces about 1350 - about 1460	"51,59,61"	https://www.nationalgallery.org.uk/media/ualofhuq/n-0569-01-000042-hd-1b.jpg	60	260	0.5	1200-1500
+61	Room 61	"Central Italy, 1480-1520"	"60,62"	https://www.nationalgallery.org.uk/media/8795/event-michelangelo-entombment-ng790-c-wide-banner.jpg	25	260	0.5	1200-1500
 62	Room 62	Cologne and north-western Germany	"61,63"	https://www.nationalgallery.org.uk/media/10240/master-of-liesborn-head-of-christ-crucified-fragment-of-the-crucifixion-scene-ng259-c-banner.jpg	25	290	0.5	1200-1500
 63	Room 63	15th-century Netherlandish painting	"59,62,64"	https://www.nationalgallery.org.uk/media/8150/room-56-the-netherlands-1400-1450-wide.jpg	25	330	0.5	1200-1500
 64	Room 64	Beyond the Netherlands	"63,65"	https://www.nationalgallery.org.uk/media/30788/n-6553-00-000124-crop-7.jpg	25	355	0.5	1200-1500
