@@ -18,7 +18,7 @@ public class AlgorithmsBenchmark {
                 .forks(1)
                 .warmupIterations(1)
                 .measurementIterations(3)
-                .mode(Mode.AverageTime)
+                .mode(Mode.Throughput)
                 .build();
 
         try {
