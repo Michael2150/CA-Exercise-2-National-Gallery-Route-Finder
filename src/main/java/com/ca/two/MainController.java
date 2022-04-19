@@ -131,6 +131,9 @@ public class MainController implements Initializable {
         //Set up the start and destination choice boxes.
         startChoiceBox.getItems().addAll(roomsList);
         destinationChoiceBox.getItems().addAll(roomsList);
+
+        startChoiceBox.getSelectionModel().select(0);
+        destinationChoiceBox.getSelectionModel().select(1);
     }
 
     @FXML
@@ -183,36 +186,29 @@ public class MainController implements Initializable {
         Room start = startChoiceBox.getSelectionModel().getSelectedItem();
         Room destination = destinationChoiceBox.getSelectionModel().getSelectedItem();
 
-        var results = Algorithms.DFSAllPaths(rooms, start, destination);
-
-        //Get All the paths from the results
-        setStatus("Generating all paths...");
+        LinkedList<LinkedList<Room>> AllResults = Algorithms.DFSAllPaths(rooms, start, destination);
+        LinkedList<LinkedList<Pixel>> RandResults = new LinkedList<>();
+        var permutations = 20;
 
         if (pixelsLoaded()) {
-            var paths = new LinkedList<LinkedList<Pixel>>();
-            for (var result : results) {
-                //print the index of the result out of the results
-                System.out.println("Result: " + results.indexOf(result)  + " of " + results.size());
-
-                //Get the path
-                var path = Algorithms.getBFSPixelsBetweenRooms(pixels, result);
-
-                //Add the path to the list of paths
-                paths.add(path);
+            //Randomly select the number of permutations from the results
+            Random rand = new Random();
+            for (int i = 0; i < permutations; i++) {
+                var randResult = AllResults.get(rand.nextInt(AllResults.size()));
+                var pxls = Algorithms.getBFSPixelsBetweenRooms(pixels, randResult);
+                RandResults.add(pxls);
             }
 
             //Set the status to loading the route image
             setStatus("Loading route image...");
 
             //Generate the route image
-
+            var img = Algorithms.getPathImageForPixels(RandResults, (int) routeOverlay.getFitWidth(), (int) routeOverlay.getFitHeight());
+            routeOverlay.setImage(img);
         }
 
         //Set the status to the time taken
-        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms)" + (pixelsLoaded() ? "" : " (Path could not be plotted, pixels still loading...) "));
-
-        //Load the results
-        //loadRouteResults(results);
+        setStatus("Ready ("+ (System.currentTimeMillis() - startTime) + "ms) (Showing " + permutations + "/" + AllResults.size() + " permutations)" + (pixelsLoaded() ? "" : " (Path could not be plotted, pixels still loading...) "));
     }
 
     @FXML
@@ -278,6 +274,7 @@ public class MainController implements Initializable {
 
         debug_graph(results);
     }
+
 
     private void loadImageView(LinkedList<Room> results) {
         var pxls = Algorithms.getBFSPixelsBetweenRooms(pixels , results);
