@@ -82,18 +82,13 @@ public class Room {
     }
 
     public Color getColor() {
-        switch (getTimePeriod().trim()) {
-            case "1200-1500":
-                return Color.rgb(84, 133, 189);
-            case "1500-1600":
-                return Color.rgb(172, 62, 89);
-            case "1600-1700":
-                return Color.rgb(234, 141, 0);
-            case "1700-1930":
-                return Color.rgb(102, 131, 91);
-            default:
-                return Color.rgb(0, 0, 0);
-        }
+        return switch (getTimePeriod().trim()) {
+            case "1200-1500" -> Color.rgb(84, 133, 189);
+            case "1500-1600" -> Color.rgb(172, 62, 89);
+            case "1600-1700" -> Color.rgb(234, 141, 0);
+            case "1700-1930" -> Color.rgb(102, 131, 91);
+            default -> Color.rgb(0, 0, 0);
+        };
     }
 
     @Override

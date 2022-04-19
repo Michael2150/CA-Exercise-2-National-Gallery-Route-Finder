@@ -1,7 +1,6 @@
 package com.ca.two.listviews;
 
 import com.ca.two.Application;
-import com.ca.two.RoomCellController;
 import com.ca.two.models.Room;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;

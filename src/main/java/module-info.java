@@ -10,4 +10,5 @@ module com.ca.two {
     exports com.ca.two.listviews;
     exports com.ca.two.models;
     opens com.ca.two.models to javafx.fxml;
+    opens com.ca.two.listviews to javafx.fxml;
 }

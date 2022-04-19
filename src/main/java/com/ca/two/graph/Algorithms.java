@@ -4,7 +4,6 @@ import com.ca.two.models.Pixel;
 import com.ca.two.models.Room;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -217,7 +216,7 @@ public class Algorithms {
     }
 
     //Sets the weight of a connection between two nodes based on the list of waypoints and the list of points to avoid.
-    public static void setupGraphWeights(Graph<Room> rooms, float diffusionDepth, double diffusionWeight, ListView<Room> listViewWaypoints, ListView<Room> listViewAvoid) {
+    public static void setupGraphWeights(Graph<Room> rooms, float diffusionDepth, double diffusionWeight, ListView<Room> listViewWaypoints, ListView<Room> listViewAvoid, boolean chkTimeOneSelected, boolean chkTimeTwoSelected, boolean chkTimeThreeSelected, boolean chkTimeFourSelected) {
         //Set up the weights for the graph
         LinkedList<Room> waypoints = new LinkedList<>();
         waypoints.addAll(listViewWaypoints.getItems());
@@ -250,6 +249,23 @@ public class Algorithms {
                 float diff = (float) (diffusionDepth * diffusionWeight - (edgeDiffusion.get(edge) * diffusionWeight));
                 diff = sign.get(edge) * diff;
                 edge.setWeight(edge.getWeight() + diff);
+            }
+        }
+
+        for (var room : rooms.getNodes()) {
+            //Get the extra weight for the waypoint based on the preferred time periods
+            var extraWeight = 0f;
+            var preferredWeightAddition = -0.3f;
+            extraWeight = switch (room.getValue().getTimePeriod().trim()) {
+                case "1200-1500" -> chkTimeOneSelected ? preferredWeightAddition : 0f;
+                case "1500-1600" -> chkTimeTwoSelected ? preferredWeightAddition : 0f;
+                case "1600-1700" -> chkTimeThreeSelected ? preferredWeightAddition : 0f;
+                case "1700-1930" -> chkTimeFourSelected ? preferredWeightAddition : 0f;
+                default -> 0f;
+            };
+            //Apply the extra weight to the edges around the waypoint
+            for (Edge<Room> edge : room.getEdges()) {
+                edge.setWeight(edge.getWeight() + extraWeight);
             }
         }
 

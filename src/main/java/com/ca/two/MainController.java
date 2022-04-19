@@ -186,9 +186,11 @@ public class MainController implements Initializable {
         Room start = startChoiceBox.getSelectionModel().getSelectedItem();
         Room destination = destinationChoiceBox.getSelectionModel().getSelectedItem();
 
+        LinkedList<Room> optimalResult = Algorithms.BFS(rooms, start, destination);
         LinkedList<LinkedList<Room>> AllResults = Algorithms.DFSAllPaths(rooms, start, destination);
         LinkedList<LinkedList<Pixel>> RandResults = new LinkedList<>();
         var permutations = 20;
+
 
         if (pixelsLoaded()) {
             //Randomly select the number of permutations from the results
@@ -226,7 +228,7 @@ public class MainController implements Initializable {
         Algorithms.setAllWeights(rooms);
 
         if (!shouldGetShortestPath()) //If we're not getting the shortest path, we need to set the weights of the waypoints
-            Algorithms.setupGraphWeights(rooms, 5f, 0.1f, listViewWaypoints, listViewAvoid);
+            Algorithms.setupGraphWeights(rooms, 5f, 0.1f, listViewWaypoints, listViewAvoid, chkTimeOne.isSelected(), chkTimeTwo.isSelected(), chkTimeThree.isSelected(), chkTimeFour.isSelected());
 
         setStatus("Running Dijkstra's algorithm...");
 

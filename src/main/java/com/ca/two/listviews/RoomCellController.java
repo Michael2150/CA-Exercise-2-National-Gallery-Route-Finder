@@ -1,4 +1,4 @@
-package com.ca.two;
+package com.ca.two.listviews;
 
 import com.ca.two.models.Room;
 import javafx.fxml.FXML;
