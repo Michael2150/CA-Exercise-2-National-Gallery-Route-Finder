@@ -3,4 +3,7 @@ dontinline,*.*_avgt_jmhStub
 dontinline,*.*_sample_jmhStub
 dontinline,*.*_ss_jmhStub
 dontinline,*.*_thrpt_jmhStub
-inline,com/ca/two/benchmarking/AlgorithmsBenchmark.benchmark
+inline,com/ca/two/benchmarking/AlgorithmsBenchmark$BenchmarkState.setup
+inline,com/ca/two/benchmarking/AlgorithmsBenchmark.BFS
+inline,com/ca/two/benchmarking/AlgorithmsBenchmark.DFSAllPaths
+inline,com/ca/two/benchmarking/AlgorithmsBenchmark.Dijkstra
